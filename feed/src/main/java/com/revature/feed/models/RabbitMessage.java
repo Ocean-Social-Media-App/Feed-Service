@@ -10,5 +10,5 @@ import lombok.NoArgsConstructor;
 @Data
 public class RabbitMessage {
     String operation;
-    //User user;
+
 }

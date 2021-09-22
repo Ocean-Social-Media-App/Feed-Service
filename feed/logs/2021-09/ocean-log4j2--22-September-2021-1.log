@@ -1,61 +1,37 @@
-2021-09-22 12:14:21,860 WARN o.s.b.a.o.j.JpaBaseConfiguration$JpaWebConfiguration [main] spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
-2021-09-22 12:14:22,843 WARN o.s.c.l.c.LoadBalancerCacheAutoConfiguration$LoadBalancerCaffeineWarnLogger [main] Spring Cloud LoadBalancer is currently working with the default cache. You can switch to using Caffeine cache, by adding it and org.springframework.cache.caffeine.CaffeineCacheManager to the classpath.
-2021-09-22 12:14:23,039 WARN c.n.d.s.t.d.RetryableEurekaHttpClient [main] Request execution failed with message: Error while extracting response for type [class org.springframework.cloud.netflix.eureka.http.EurekaApplications] and content type [application/json]; nested exception is org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Root name ('timestamp') does not match expected ('applications') for type `org.springframework.cloud.netflix.eureka.http.EurekaApplications`; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Root name ('timestamp') does not match expected ('applications') for type `org.springframework.cloud.netflix.eureka.http.EurekaApplications`
- at [Source: (PushbackInputStream); line: 1, column: 2] (through reference chain: org.springframework.cloud.netflix.eureka.http.EurekaApplications["timestamp"])
-2021-09-22 12:14:23,040 WARN c.n.d.DiscoveryClient$1 [main] Using default backup registry implementation which does not do anything.
-2021-09-22 12:14:53,080 WARN c.n.d.s.t.d.RetryableEurekaHttpClient [DiscoveryClient-CacheRefreshExecutor-0] Request execution failed with message: Error while extracting response for type [class org.springframework.cloud.netflix.eureka.http.EurekaApplications] and content type [application/json]; nested exception is org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Root name ('timestamp') does not match expected ('applications') for type `org.springframework.cloud.netflix.eureka.http.EurekaApplications`; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Root name ('timestamp') does not match expected ('applications') for type `org.springframework.cloud.netflix.eureka.http.EurekaApplications`
- at [Source: (PushbackInputStream); line: 1, column: 2] (through reference chain: org.springframework.cloud.netflix.eureka.http.EurekaApplications["timestamp"])
-2021-09-22 12:14:53,088 WARN c.n.d.s.t.d.RetryableEurekaHttpClient [DiscoveryClient-HeartbeatExecutor-0] Request execution failed with message: Error while extracting response for type [class com.netflix.appinfo.InstanceInfo] and content type [application/json]; nested exception is org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Root name ('timestamp') does not match expected ('instance') for type `com.netflix.appinfo.InstanceInfo`; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Root name ('timestamp') does not match expected ('instance') for type `com.netflix.appinfo.InstanceInfo`
- at [Source: (PushbackInputStream); line: 1, column: 2] (through reference chain: com.netflix.appinfo.InstanceInfo["timestamp"])
-2021-09-22 12:14:53,101 WARN c.n.d.s.t.d.RetryableEurekaHttpClient [DiscoveryClient-HeartbeatExecutor-0] Request execution failed with message: Error while extracting response for type [class com.netflix.appinfo.InstanceInfo] and content type [application/json]; nested exception is org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Root name ('timestamp') does not match expected ('instance') for type `com.netflix.appinfo.InstanceInfo`; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Root name ('timestamp') does not match expected ('instance') for type `com.netflix.appinfo.InstanceInfo`
- at [Source: (PushbackInputStream); line: 1, column: 2] (through reference chain: com.netflix.appinfo.InstanceInfo["timestamp"])
-2021-09-22 12:14:53,101 ERROR c.n.d.DiscoveryClient [DiscoveryClient-HeartbeatExecutor-0] DiscoveryClient_FEED-SERVICE/feed-service:3578d2d5ab305df11aa83faa66a0bf62 - was unable to send heartbeat!
-com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
-	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:112) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.sendHeartBeat(EurekaHttpClientDecorator.java:89) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$3.execute(EurekaHttpClientDecorator.java:92) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.sendHeartBeat(EurekaHttpClientDecorator.java:89) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.DiscoveryClient.renew(DiscoveryClient.java:893) [eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.DiscoveryClient$HeartbeatThread.run(DiscoveryClient.java:1457) [eureka-client-1.10.14.jar:1.10.14]
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [?:1.8.0_291]
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [?:1.8.0_291]
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [?:1.8.0_291]
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [?:1.8.0_291]
-	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_291]
-2021-09-22 12:15:23,105 WARN c.n.d.s.t.d.RetryableEurekaHttpClient [DiscoveryClient-CacheRefreshExecutor-0] Request execution failed with message: Error while extracting response for type [class org.springframework.cloud.netflix.eureka.http.EurekaApplications] and content type [application/json]; nested exception is org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Root name ('timestamp') does not match expected ('applications') for type `org.springframework.cloud.netflix.eureka.http.EurekaApplications`; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Root name ('timestamp') does not match expected ('applications') for type `org.springframework.cloud.netflix.eureka.http.EurekaApplications`
- at [Source: (PushbackInputStream); line: 1, column: 2] (through reference chain: org.springframework.cloud.netflix.eureka.http.EurekaApplications["timestamp"])
-2021-09-22 12:15:23,132 WARN c.n.d.s.t.d.RetryableEurekaHttpClient [DiscoveryClient-HeartbeatExecutor-0] Request execution failed with message: Error while extracting response for type [class com.netflix.appinfo.InstanceInfo] and content type [application/json]; nested exception is org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Root name ('timestamp') does not match expected ('instance') for type `com.netflix.appinfo.InstanceInfo`; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Root name ('timestamp') does not match expected ('instance') for type `com.netflix.appinfo.InstanceInfo`
- at [Source: (PushbackInputStream); line: 1, column: 2] (through reference chain: com.netflix.appinfo.InstanceInfo["timestamp"])
-2021-09-22 12:15:23,132 ERROR c.n.d.DiscoveryClient [DiscoveryClient-HeartbeatExecutor-0] DiscoveryClient_FEED-SERVICE/feed-service:3578d2d5ab305df11aa83faa66a0bf62 - was unable to send heartbeat!
-com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
-	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:112) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.sendHeartBeat(EurekaHttpClientDecorator.java:89) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$3.execute(EurekaHttpClientDecorator.java:92) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.sendHeartBeat(EurekaHttpClientDecorator.java:89) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.DiscoveryClient.renew(DiscoveryClient.java:893) [eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.DiscoveryClient$HeartbeatThread.run(DiscoveryClient.java:1457) [eureka-client-1.10.14.jar:1.10.14]
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [?:1.8.0_291]
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [?:1.8.0_291]
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [?:1.8.0_291]
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [?:1.8.0_291]
-	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_291]
-2021-09-22 12:15:53,130 WARN c.n.d.s.t.d.RetryableEurekaHttpClient [DiscoveryClient-CacheRefreshExecutor-0] Request execution failed with message: Error while extracting response for type [class org.springframework.cloud.netflix.eureka.http.EurekaApplications] and content type [application/json]; nested exception is org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Root name ('timestamp') does not match expected ('applications') for type `org.springframework.cloud.netflix.eureka.http.EurekaApplications`; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Root name ('timestamp') does not match expected ('applications') for type `org.springframework.cloud.netflix.eureka.http.EurekaApplications`
- at [Source: (PushbackInputStream); line: 1, column: 2] (through reference chain: org.springframework.cloud.netflix.eureka.http.EurekaApplications["timestamp"])
-2021-09-22 12:15:53,157 WARN c.n.d.s.t.d.RetryableEurekaHttpClient [DiscoveryClient-HeartbeatExecutor-0] Request execution failed with message: Error while extracting response for type [class com.netflix.appinfo.InstanceInfo] and content type [application/json]; nested exception is org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Root name ('timestamp') does not match expected ('instance') for type `com.netflix.appinfo.InstanceInfo`; nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Root name ('timestamp') does not match expected ('instance') for type `com.netflix.appinfo.InstanceInfo`
- at [Source: (PushbackInputStream); line: 1, column: 2] (through reference chain: com.netflix.appinfo.InstanceInfo["timestamp"])
-2021-09-22 12:15:53,157 ERROR c.n.d.DiscoveryClient [DiscoveryClient-HeartbeatExecutor-0] DiscoveryClient_FEED-SERVICE/feed-service:3578d2d5ab305df11aa83faa66a0bf62 - was unable to send heartbeat!
-com.netflix.discovery.shared.transport.TransportException: Cannot execute request on any known server
-	at com.netflix.discovery.shared.transport.decorator.RetryableEurekaHttpClient.execute(RetryableEurekaHttpClient.java:112) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.sendHeartBeat(EurekaHttpClientDecorator.java:89) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator$3.execute(EurekaHttpClientDecorator.java:92) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.shared.transport.decorator.SessionedEurekaHttpClient.execute(SessionedEurekaHttpClient.java:77) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.shared.transport.decorator.EurekaHttpClientDecorator.sendHeartBeat(EurekaHttpClientDecorator.java:89) ~[eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.DiscoveryClient.renew(DiscoveryClient.java:893) [eureka-client-1.10.14.jar:1.10.14]
-	at com.netflix.discovery.DiscoveryClient$HeartbeatThread.run(DiscoveryClient.java:1457) [eureka-client-1.10.14.jar:1.10.14]
-	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511) [?:1.8.0_291]
-	at java.util.concurrent.FutureTask.run(FutureTask.java:266) [?:1.8.0_291]
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149) [?:1.8.0_291]
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624) [?:1.8.0_291]
-	at java.lang.Thread.run(Thread.java:748) [?:1.8.0_291]
+2021-09-22 13:00:58,979 ERROR o.s.o.j.AbstractEntityManagerFactoryBean [main] Failed to initialize JPA EntityManagerFactory: @OneToOne or @ManyToOne on com.revature.feed.models.Comment.postId references an unknown entity: java.lang.Integer
+2021-09-22 13:00:58,984 WARN o.s.c.s.AbstractApplicationContext [main] Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is org.hibernate.AnnotationException: @OneToOne or @ManyToOne on com.revature.feed.models.Comment.postId references an unknown entity: java.lang.Integer
+2021-09-22 13:00:59,017 ERROR o.s.b.SpringApplication [main] Application run failed
+org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'entityManagerFactory' defined in class path resource [org/springframework/boot/autoconfigure/orm/jpa/HibernateJpaConfiguration.class]: Invocation of init method failed; nested exception is org.hibernate.AnnotationException: @OneToOne or @ManyToOne on com.revature.feed.models.Comment.postId references an unknown entity: java.lang.Integer
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1786) ~[spring-beans-5.3.9.jar:5.3.9]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602) ~[spring-beans-5.3.9.jar:5.3.9]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524) ~[spring-beans-5.3.9.jar:5.3.9]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[spring-beans-5.3.9.jar:5.3.9]
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[spring-beans-5.3.9.jar:5.3.9]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[spring-beans-5.3.9.jar:5.3.9]
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[spring-beans-5.3.9.jar:5.3.9]
+	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1154) ~[spring-context-5.3.9.jar:5.3.9]
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:908) ~[spring-context-5.3.9.jar:5.3.9]
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[spring-context-5.3.9.jar:5.3.9]
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145) ~[spring-boot-2.5.4.jar:2.5.4]
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:754) [spring-boot-2.5.4.jar:2.5.4]
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:434) [spring-boot-2.5.4.jar:2.5.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:338) [spring-boot-2.5.4.jar:2.5.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1343) [spring-boot-2.5.4.jar:2.5.4]
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1332) [spring-boot-2.5.4.jar:2.5.4]
+	at com.revature.feed.FeedApplication.main(FeedApplication.java:10) [classes/:?]
+Caused by: org.hibernate.AnnotationException: @OneToOne or @ManyToOne on com.revature.feed.models.Comment.postId references an unknown entity: java.lang.Integer
+	at org.hibernate.cfg.ToOneFkSecondPass.doSecondPass(ToOneFkSecondPass.java:100) ~[hibernate-core-5.4.32.Final.jar:5.4.32.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.processEndOfQueue(InFlightMetadataCollectorImpl.java:1823) ~[hibernate-core-5.4.32.Final.jar:5.4.32.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.processFkSecondPassesInOrder(InFlightMetadataCollectorImpl.java:1767) ~[hibernate-core-5.4.32.Final.jar:5.4.32.Final]
+	at org.hibernate.boot.internal.InFlightMetadataCollectorImpl.processSecondPasses(InFlightMetadataCollectorImpl.java:1655) ~[hibernate-core-5.4.32.Final.jar:5.4.32.Final]
+	at org.hibernate.boot.model.process.spi.MetadataBuildingProcess.complete(MetadataBuildingProcess.java:295) ~[hibernate-core-5.4.32.Final.jar:5.4.32.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.metadata(EntityManagerFactoryBuilderImpl.java:1224) ~[hibernate-core-5.4.32.Final.jar:5.4.32.Final]
+	at org.hibernate.jpa.boot.internal.EntityManagerFactoryBuilderImpl.build(EntityManagerFactoryBuilderImpl.java:1255) ~[hibernate-core-5.4.32.Final.jar:5.4.32.Final]
+	at org.springframework.orm.jpa.vendor.SpringHibernateJpaPersistenceProvider.createContainerEntityManagerFactory(SpringHibernateJpaPersistenceProvider.java:58) ~[spring-orm-5.3.9.jar:5.3.9]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.createNativeEntityManagerFactory(LocalContainerEntityManagerFactoryBean.java:365) ~[spring-orm-5.3.9.jar:5.3.9]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.buildNativeEntityManagerFactory(AbstractEntityManagerFactoryBean.java:409) ~[spring-orm-5.3.9.jar:5.3.9]
+	at org.springframework.orm.jpa.AbstractEntityManagerFactoryBean.afterPropertiesSet(AbstractEntityManagerFactoryBean.java:396) ~[spring-orm-5.3.9.jar:5.3.9]
+	at org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean.afterPropertiesSet(LocalContainerEntityManagerFactoryBean.java:341) ~[spring-orm-5.3.9.jar:5.3.9]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845) ~[spring-beans-5.3.9.jar:5.3.9]
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782) ~[spring-beans-5.3.9.jar:5.3.9]
+	... 16 more

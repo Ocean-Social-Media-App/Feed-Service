@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController("postController")
-@RequestMapping(value= "api")
-//@CrossOrigin(value = "http://localhost:4200/", allowCredentials = "true")
+@RequestMapping(value= "post")
+@CrossOrigin(value = "http://3.12.71.16:9999/", allowCredentials = "true")
 public class PostController {
 
     private PostService postService;
@@ -22,7 +22,7 @@ public class PostController {
 
 
     //Create a Post
-    @PostMapping("post")
+    @PostMapping
     public Response createPost(@RequestBody Post post){
         Response response;
         Post tempPost = this.postService.createPost(post);
@@ -48,7 +48,7 @@ public class PostController {
     }
 
     //Read a post
-    @GetMapping("post/{postId}")
+    @GetMapping("{postId}")
     public Response lookForAPost(@PathVariable Integer postId){
         Response response;
         Post post = this.postService.getPostById(postId);
@@ -59,8 +59,10 @@ public class PostController {
         }
         return response;
     }
+
     //Get Post by UserId
-    @GetMapping("post/userId/{userId}")
+    //Change to send newest to oldest
+    @GetMapping("userId/{userId}")
     public Response lookForPostByUser(@PathVariable Integer userId){
         Response response;
         List<Post> post = this.postService.getPostByUserId(userId);
@@ -74,7 +76,7 @@ public class PostController {
     }
 
     //Update a post
-    @PutMapping("updatePost")
+    @PutMapping
     public Response updatePost(@RequestBody Post post){
         Response response;
         Post updatePost = this.postService.updatePost(post);
@@ -87,7 +89,7 @@ public class PostController {
     }
 
     //Delete a post
-    @DeleteMapping("deletePost/{postId}")
+    @DeleteMapping("{postId}")
     public Response deletePost(@PathVariable Integer postId){
         Response response;
         Post deletePost = this.postService.deletePost(postId);

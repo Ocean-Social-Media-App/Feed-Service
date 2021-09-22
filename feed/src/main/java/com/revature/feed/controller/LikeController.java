@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController("likeController")
-@RequestMapping(value= "api")
-//@CrossOrigin(value = "http://localhost:4200/", allowCredentials = "true")
+@RequestMapping(value= "like")
+@CrossOrigin(value = "http://3.12.71.16:9999/", allowCredentials = "true")
 public class LikeController {
     private LikeService likeService;
 
@@ -22,7 +22,7 @@ public class LikeController {
     private Environment environment;
 
     //Create a Like
-    @PostMapping("like")
+    @PostMapping
     public Response createLike(@RequestBody Like like){
         Response response;
         Like tempLike = this.likeService.createLike(like);
@@ -34,7 +34,7 @@ public class LikeController {
         return response;
     }
     //Get all Likes by PostID
-    @GetMapping("like/{postId}")
+    @GetMapping("{postId}")
     public Response getLikeByPostId(@PathVariable Integer postId){
     Response response;
     List<Like> like = this.likeService.getLikeByPostId(postId);
@@ -47,7 +47,7 @@ public class LikeController {
 }
 
     //Get like PostId and by UserId
-    @GetMapping("like/{postId}/{userId}")
+    @GetMapping("{postId}/{userId}")
     public Response getLikeByPostIdAndUserID(@PathVariable Integer postId, @PathVariable Integer userId){
        Response response;
         boolean theyLikedIt = false;
@@ -68,7 +68,7 @@ public class LikeController {
     }
 
     //Delete a Like
-    @DeleteMapping("like/{likeId}")
+    @DeleteMapping("{likeId}")
     public Response deleteLike(@PathVariable Integer likeId){
         Response response;
         Boolean deleteLike = this.likeService.deleteLike(likeId);

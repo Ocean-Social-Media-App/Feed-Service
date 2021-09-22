@@ -6,15 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController("fileUploadController")
 @RequestMapping(value= "api")
-//@CrossOrigin(value = "http://localhost:4200/", allowCredentials = "true")
+@CrossOrigin(value = "http://3.12.71.16:9999/", allowCredentials = "true")
 public class FileUploadController {
 
     private S3Service s3Service;
