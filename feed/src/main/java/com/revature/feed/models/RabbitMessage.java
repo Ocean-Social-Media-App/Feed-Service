@@ -10,5 +10,6 @@ import lombok.NoArgsConstructor;
 @Data
 public class RabbitMessage {
     String operation;
-
+    Post post;
+    Like like;
 }
