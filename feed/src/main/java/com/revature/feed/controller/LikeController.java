@@ -1,5 +1,7 @@
 package com.revature.feed.controller;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.revature.feed.config.JwtUtility;
 import com.revature.feed.models.Like;
 import com.revature.feed.models.Response;
 import com.revature.feed.services.LikeService;
@@ -8,6 +10,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController("likeController")
 @RequestMapping(value= "like")
@@ -21,9 +24,18 @@ public class LikeController {
     @Autowired
     private Environment environment;
 
+    @Autowired
+    JwtUtility jwtUtility;
+
     //Create a Like
     @PostMapping
-    public Response createLike(@RequestBody Like like){
+    public Response createLike(@RequestBody Like like, @RequestHeader Map<String, String> headers){
+        //Verify the JWT
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "No session found", null);
+        }
+
         Response response;
         Like tempLike = this.likeService.createLike(like);
         if(tempLike != null){
@@ -69,7 +81,13 @@ public class LikeController {
 
     //Delete a Like
     @DeleteMapping("{likeId}")
-    public Response deleteLike(@PathVariable Integer likeId){
+    public Response deleteLike(@PathVariable Integer likeId, @RequestHeader Map<String, String> headers){
+        //Verify the JWT
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "No session found", null);
+        }
+
         Response response;
         Boolean deleteLike = this.likeService.deleteLike(likeId);
         if(deleteLike){

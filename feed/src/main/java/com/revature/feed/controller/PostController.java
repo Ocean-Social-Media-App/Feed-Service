@@ -1,5 +1,7 @@
 package com.revature.feed.controller;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.revature.feed.config.JwtUtility;
 import com.revature.feed.models.Post;
 import com.revature.feed.models.Response;
 import com.revature.feed.services.PostService;
@@ -9,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController("postController")
 @RequestMapping(value= "post")
@@ -18,12 +21,21 @@ public class PostController {
     private PostService postService;
 
     @Autowired
+    JwtUtility jwtUtility;
+
+    @Autowired
     public PostController(PostService postService){ this.postService = postService;}
 
 
     //Create a Post
     @PostMapping
-    public Response createPost(@RequestBody Post post){
+    public Response createPost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
+        //Verify the JWT
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "No session found", null);
+        }
+
         Response response;
         Post tempPost = this.postService.createPost(post);
         if(tempPost != null){
@@ -77,7 +89,13 @@ public class PostController {
 
     //Update a post
     @PutMapping
-    public Response updatePost(@RequestBody Post post){
+    public Response updatePost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
+        //Verify the JWT
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "No session found", null);
+        }
+
         Response response;
         Post updatePost = this.postService.updatePost(post);
         if(updatePost != post){
@@ -90,7 +108,13 @@ public class PostController {
 
     //Delete a post
     @DeleteMapping("{postId}")
-    public Response deletePost(@PathVariable Integer postId){
+    public Response deletePost(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
+        //Verify the JWT
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "No session found", null);
+        }
+
         Response response;
         Post deletePost = this.postService.deletePost(postId);
         if(deletePost != null){

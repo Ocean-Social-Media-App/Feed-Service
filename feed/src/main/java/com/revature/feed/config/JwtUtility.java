@@ -16,7 +16,7 @@ public class JwtUtility {
     public static final Algorithm algorithm = Algorithm.HMAC256(SECRET);
     public static final JWTVerifier verifier = JWT.require(algorithm).build();
 
-    public String genToken(Integer userId) {
+    /*public String genToken(Integer userId) {
         try {
 //            Map<String, String> payloads = new HashMap<>();
 //            payloads.put("userId", "12312");
@@ -30,7 +30,7 @@ public class JwtUtility {
             exception.printStackTrace();
         }
         return null;
-    }
+    }*/
 
     public DecodedJWT verify(String token) {
         try {
