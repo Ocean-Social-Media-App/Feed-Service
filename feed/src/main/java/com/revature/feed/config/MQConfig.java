@@ -9,22 +9,35 @@ import org.springframework.context.annotation.Bean;
 
 public class MQConfig {
 
-    public static final String QUEUE ="user_queue";
+    public static final String POST ="post_queue";
+    public static final String LIKE ="like_queue";
     public static final String EXCHANGE = "exchange";
 
     @Bean
-    public Queue queue() {return new Queue(QUEUE);}
+    public Queue post() {return new Queue(POST);}
+
+    @Bean
+    public Queue like() {return new Queue(LIKE);}
 
     @Bean
     public TopicExchange exchange(){return new TopicExchange(EXCHANGE);}
 
     @Bean
-    public Binding binding(){
+    public Binding postBinding(){
         return BindingBuilder
-                .bind(queue())
+                .bind(post())
                 .to(exchange())
-                .with(QUEUE);
+                .with(POST);
     }
+
+    @Bean
+    public Binding likeBinding(){
+        return BindingBuilder
+                .bind(like())
+                .to(exchange())
+                .with(LIKE);
+    }
+
 
     @Bean
     public MessageConverter messageConverter(){return new Jackson2JsonMessageConverter();
