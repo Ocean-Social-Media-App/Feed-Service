@@ -31,10 +31,10 @@ public class PostController {
     //Angular send message we receive
     @PostMapping
     public Response createPost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
-        //Verify the JWT
+        //Verify the JWT - Andrew
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
-            return new Response(false, "No session found", null);
+            return new Response(false, "Invalid token", null);
         }
 
         Response response;
@@ -51,7 +51,13 @@ public class PostController {
     //Read a post
     //Angular send message we receive
     @GetMapping("{postId}")
-    public Response lookForAPost(@PathVariable Integer postId){
+    public Response lookForAPost(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
+        //Verify the JWT - Andrew
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "Invalid token", null);
+        }
+
         Response response;
         Post post = this.postService.getPostById(postId);
         if(post != null){
@@ -65,7 +71,13 @@ public class PostController {
     //Get Post by UserId
     //Angular send message we receive
     @GetMapping("userId/{userId}")
-    public Response lookForPostByUser(@PathVariable Integer userId){
+    public Response lookForPostByUser(@PathVariable Integer userId, @RequestHeader Map<String, String> headers){
+        //Verify the JWT - Andrew
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "Invalid token", null);
+        }
+
         Response response;
         List<Post> post = this.postService.getPostByUserId(userId);
         //If statement checks size as array is always returned
@@ -81,10 +93,10 @@ public class PostController {
     //Angular send message we receive
     @PutMapping
     public Response updatePost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
-        //Verify the JWT
+        //Verify the JWT - Andrew
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
-            return new Response(false, "No session found", null);
+            return new Response(false, "Invalid token", null);
         }
 
         Response response;
@@ -101,10 +113,10 @@ public class PostController {
     //Angular send message we receive
     @DeleteMapping("{postId}")
     public Response deletePost(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
-        //Verify the JWT
+        //Verify the JWT - Andrew
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
-            return new Response(false, "No session found", null);
+            return new Response(false, "Invalid token", null);
         }
 
         Response response;

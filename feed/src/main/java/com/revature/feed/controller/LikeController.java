@@ -31,10 +31,10 @@ public class LikeController {
     //Angular send message we receive
     @PostMapping
     public Response createLike(@RequestBody Like like, @RequestHeader Map<String, String> headers){
-        //Verify the JWT
+        //Verify the JWT - Andrew
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
-            return new Response(false, "No session found", null);
+            return new Response(false, "Invalid token", null);
         }
 
         Response response;
@@ -49,8 +49,14 @@ public class LikeController {
     //Get all Likes by PostID
     //Angular send message we receive
     @GetMapping("{postId}")
-    public Response getLikeByPostId(@PathVariable Integer postId){
-    Response response;
+    public Response getLikeByPostId(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
+        //Verify the JWT - Andrew
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "Invalid token", null);
+        }
+
+        Response response;
     List<Like> like = this.likeService.getLikeByPostId(postId);
         if(like != null){
         response = new Response(true, "Here is the likes of this post", like);
@@ -63,8 +69,15 @@ public class LikeController {
     //Get like PostId and by UserId
     //Angular send message we receive
     @GetMapping("{postId}/{userId}")
-    public Response getLikeByPostIdAndUserID(@PathVariable Integer postId, @PathVariable Integer userId){
-       Response response;
+    public Response getLikeByPostIdAndUserID(@PathVariable Integer postId, @PathVariable Integer userId,
+                                             @RequestHeader Map<String, String> headers){
+        //Verify the JWT - Andrew
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "Invalid token", null);
+        }
+
+        Response response;
         boolean theyLikedIt = false;
        List<Like> like = this.likeService.getLikeByPostId(postId);
        Integer likeId = 0;
@@ -86,10 +99,10 @@ public class LikeController {
     //Angular send message we receive
     @DeleteMapping("{likeId}")
     public Response deleteLike(@PathVariable Integer likeId, @RequestHeader Map<String, String> headers){
-        //Verify the JWT
+        //Verify the JWT - Andrew
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
-            return new Response(false, "No session found", null);
+            return new Response(false, "Invalid token", null);
         }
 
         Response response;
