@@ -46,8 +46,15 @@ public class PostController {
         }
         return response;
     }
+
     @GetMapping("fave/{pageNumber}")
-    public Response getPostFromFave(@PathVariable Integer pageNumber){
+    public Response getPostFromFave(@PathVariable Integer pageNumber, @RequestHeader Map<String, String> headers){
+        //Verify the JWT - Andrew
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "Invalid token", null);
+        }
+
         Response response;
         Integer userId = 2;
         Integer userId1 = 8;
