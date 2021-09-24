@@ -51,8 +51,6 @@ public class PostService {
     }*/
 
     //Post for the favorite
-    //Angular send message we receive then request fave list from userService
-    //Send Angular info
     public List<Post> selectPostForFav(Integer page, List<Integer> fave ) {
         //full List of Parent Posts
         List<Post> fullListPost = new ArrayList<>();
@@ -96,19 +94,7 @@ public class PostService {
 
 
     //Get comments for a post
-    //Angular send message we receive
-    //////////////////////////////SOrt this
     public List<Post> getAllParentId(Integer parentId){
-        //need to order them
-        //put in array
-        /*
-        *  array = [ 1, 2, 3]
-        * */
-        //need to loop through for the comments to the comments
-        /*
-        * array = [1[1,2], 2
-        * */
-        //put those in the comment array
         List<Post> commentList = this.postDao.getPostByParentId(parentId);
         //Putting it newest to oldest
         Collections.sort(commentList, Comparator.comparingInt(Post::getPostId).reversed());
