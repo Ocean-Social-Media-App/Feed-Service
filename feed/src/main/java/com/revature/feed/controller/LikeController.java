@@ -22,6 +22,7 @@ public class LikeController {
     private Environment environment;
 
     //Create a Like
+    //Angular send message we receive
     @PostMapping
     public Response createLike(@RequestBody Like like){
         Response response;
@@ -34,6 +35,7 @@ public class LikeController {
         return response;
     }
     //Get all Likes by PostID
+    //Angular send message we receive
     @GetMapping("{postId}")
     public Response getLikeByPostId(@PathVariable Integer postId){
     Response response;
@@ -47,6 +49,7 @@ public class LikeController {
 }
 
     //Get like PostId and by UserId
+    //Angular send message we receive
     @GetMapping("{postId}/{userId}")
     public Response getLikeByPostIdAndUserID(@PathVariable Integer postId, @PathVariable Integer userId){
        Response response;
@@ -68,6 +71,7 @@ public class LikeController {
     }
 
     //Delete a Like
+    //Angular send message we receive
     @DeleteMapping("{likeId}")
     public Response deleteLike(@PathVariable Integer likeId){
         Response response;

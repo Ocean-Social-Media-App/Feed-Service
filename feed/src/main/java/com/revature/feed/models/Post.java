@@ -21,6 +21,12 @@ public class Post {
     @GeneratedValue(strategy =GenerationType.IDENTITY)
     private Integer postId;
 
+    //fk for the post it belongs to
+    //If its the 1st post this will be null
+    //any post that reference will contain this.
+    @Column(name="postParentId")
+    private Integer postParentId;
+
     @Column(name="postPicUrl")
     private String postPicUrl;
 
