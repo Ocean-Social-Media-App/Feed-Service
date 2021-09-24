@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController("portController")
 @RequestMapping(value= "port")
-@CrossOrigin(value = "http://3.12.71.16:9999/", allowCredentials = "true")
 public class PortController {
 
     @Autowired

@@ -10,12 +10,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @RestController("postController")
 @RequestMapping(value= "post")
-@CrossOrigin(value = "http://3.12.71.16:9999/", allowCredentials = "true")
 public class PostController {
 
     private PostService postService;
@@ -46,7 +46,22 @@ public class PostController {
         }
         return response;
     }
-
+    @GetMapping("fave/{pageNumber}")
+    public Response getPostFromFave(@PathVariable Integer pageNumber){
+        Response response;
+        Integer userId = 2;
+        Integer userId1 = 8;
+        List<Integer> exampleList = new ArrayList<>();
+        exampleList.add(userId);
+        exampleList.add(userId1);
+        List<Post> favePost = this.postService.selectPostForFav(pageNumber,exampleList);
+        if(favePost != null){
+            response = new Response(true,"Fave list", favePost);
+        }else{
+            response = new Response(false,"You have reached the end", null);
+        }
+        return response;
+    }
 
     //Read a post
     //Angular send message we receive
@@ -67,6 +82,14 @@ public class PostController {
         }
         return response;
     }
+
+    @GetMapping("comment/{postId}")
+    public Response getComment(@PathVariable Integer postId){
+        Response response;
+        List<Post> comment = this.postService.getAllParentId(postId);
+        return response = new Response(true, "Here are the comments", comment);
+    }
+
 
     //Get Post by UserId
     //Angular send message we receive

@@ -14,7 +14,6 @@ import java.util.Map;
 
 @RestController("likeController")
 @RequestMapping(value= "like")
-@CrossOrigin(value = "http://3.12.71.16:9999/", allowCredentials = "true")
 public class LikeController {
     private LikeService likeService;
 
