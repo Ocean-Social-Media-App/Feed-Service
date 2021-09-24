@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController("fileUploadController")
-@RequestMapping(value= "api")
-@CrossOrigin(value = "http://3.12.71.16:9999/", allowCredentials = "true")
 public class FileUploadController {
 
     private S3Service s3Service;
