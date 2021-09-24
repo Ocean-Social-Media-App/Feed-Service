@@ -53,29 +53,44 @@ public class PostService {
     //Post for the favorite
     //Angular send message we receive then request fave list from userService
     //Send Angular info
-    public List<Post> selectPostForFav(Integer page, List<Integer> fave ){
+    public List<Post> selectPostForFav(Integer page, List<Integer> fave ) {
         //full List of Parent Posts
         List<Post> fullListPost = new ArrayList<>();
 
         //Sorts through Fave Array for the userIds
-        for(int i= 0; i>= fave.size(); i++ ){
+        for (int i = 0; i < fave.size(); i++) {
             //gets post by userId
             List<Post> userPost = this.postDao.getPostByUserId(fave.get(i));
-
+            System.out.println(userPost);
             //filters post if its parent Post or not
             List<Post> filteredPosts = userPost.stream()
-                    .filter(x -> x.getPostParentId().equals(null))
+                    .filter(x -> x.getPostParentId() == null)
                     .collect(Collectors.toList());
-            fullListPost = filteredPosts;
+            fullListPost.addAll(filteredPosts);
         }
         //Putting it newest to oldest
         Collections.sort(fullListPost, Comparator.comparingInt(Post::getPostId).reversed());
-        //Gets page requested and posts on that page
-        Integer pageStart = page *20 -19;
-        Integer pageEnd = page *20;
-        List<Post> pagePost = fullListPost.subList(pageStart, pageEnd);
+        Double checkPages = Double.valueOf(fullListPost.size()) / 20;
+        int num = (int) (Math.ceil(checkPages));
+        if (page <= num) {
+            //Gets page requested and posts on that page
+            Integer pageEnd = page * 20;
+            Integer offset = page * 20 - 19;//Gets off set of next page
+            List<Post> pagePost = new ArrayList<>();
+            for (int j = offset; j < pageEnd; j++) {
+                if (fullListPost.size() == j) {
+                    break;
+                } else {
+                    pagePost.add(fullListPost.get(j));
+                }
+            }
 
-        return pagePost;
+            return pagePost;
+
+        }else{
+            return null;
+        }
+
     }
 
 
@@ -84,7 +99,20 @@ public class PostService {
     //Angular send message we receive
     //////////////////////////////SOrt this
     public List<Post> getAllParentId(Integer parentId){
-        return this.postDao.getPostByParentId(parentId);
+        //need to order them
+        //put in array
+        /*
+        *  array = [ 1, 2, 3]
+        * */
+        //need to loop through for the comments to the comments
+        /*
+        * array = [1[1,2], 2
+        * */
+        //put those in the comment array
+        List<Post> commentList = this.postDao.getPostByParentId(parentId);
+        //Putting it newest to oldest
+        Collections.sort(commentList, Comparator.comparingInt(Post::getPostId).reversed());
+        return commentList;
     }
 
 
@@ -100,7 +128,6 @@ public class PostService {
         List<Post> filteredPosts = database.stream()
                 .filter(x -> x.getPostParentId().equals(null))
                 .collect(Collectors.toList());
-
         return filteredPosts;
     }
 
