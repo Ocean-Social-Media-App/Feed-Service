@@ -1,5 +1,7 @@
 package com.revature.feed.controller;
 
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.revature.feed.config.JwtUtility;
 import com.revature.feed.models.Post;
 import com.revature.feed.models.Response;
 import com.revature.feed.services.PostService;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController("postController")
 @RequestMapping(value= "post")
@@ -18,13 +21,22 @@ public class PostController {
     private PostService postService;
 
     @Autowired
+    JwtUtility jwtUtility;
+
+    @Autowired
     public PostController(PostService postService){ this.postService = postService;}
 
 
     //Create a Post
     //Angular send message we receive
     @PostMapping
-    public Response createPost(@RequestBody Post post){
+    public Response createPost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
+        //Verify the JWT - Andrew
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "Invalid token", null);
+        }
+
         Response response;
         Post tempPost = this.postService.createPost(post);
         if(tempPost != null){
@@ -34,8 +46,15 @@ public class PostController {
         }
         return response;
     }
+
     @GetMapping("fave/{pageNumber}")
-    public Response getPostFromFave(@PathVariable Integer pageNumber){
+    public Response getPostFromFave(@PathVariable Integer pageNumber, @RequestHeader Map<String, String> headers){
+        //Verify the JWT - Andrew
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "Invalid token", null);
+        }
+
         Response response;
         Integer userId = 2;
         Integer userId1 = 8;
@@ -54,7 +73,13 @@ public class PostController {
     //Read a post
     //Angular send message we receive
     @GetMapping("{postId}")
-    public Response lookForAPost(@PathVariable Integer postId){
+    public Response lookForAPost(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
+        //Verify the JWT - Andrew
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "Invalid token", null);
+        }
+
         Response response;
         Post post = this.postService.getPostById(postId);
         if(post != null){
@@ -76,7 +101,13 @@ public class PostController {
     //Get Post by UserId
     //Angular send message we receive
     @GetMapping("userId/{userId}")
-    public Response lookForPostByUser(@PathVariable Integer userId){
+    public Response lookForPostByUser(@PathVariable Integer userId, @RequestHeader Map<String, String> headers){
+        //Verify the JWT - Andrew
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "Invalid token", null);
+        }
+
         Response response;
         List<Post> post = this.postService.getPostByUserId(userId);
         //If statement checks size as array is always returned
@@ -91,7 +122,13 @@ public class PostController {
     //Update a post
     //Angular send message we receive
     @PutMapping
-    public Response updatePost(@RequestBody Post post){
+    public Response updatePost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
+        //Verify the JWT - Andrew
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "Invalid token", null);
+        }
+
         Response response;
         Post updatePost = this.postService.updatePost(post);
         if(updatePost != post){
@@ -105,7 +142,13 @@ public class PostController {
     //Delete a post
     //Angular send message we receive
     @DeleteMapping("{postId}")
-    public Response deletePost(@PathVariable Integer postId){
+    public Response deletePost(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
+        //Verify the JWT - Andrew
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "Invalid token", null);
+        }
+
         Response response;
         Post deletePost = this.postService.deletePost(postId);
         if(deletePost != null){
