@@ -17,4 +17,13 @@ public interface PostDao extends JpaRepository<Post, Integer> {
     @Query("from Post where userId = :userId")
     List<Post> getPostByUserId(@Param("userId") Integer userId);
 
+    //Custom Query to get all posts by ParentId
+    @Query("from Post where postParentId = :parentId")
+    List<Post> getPostByParentId(Integer parentId);
+
+    @Query("from Post where postParentId = :postId")
+    void deleteByParentId(Integer postId);
+
+    List<Post> findPostBypostIdBetween(Integer min, Integer max);
+
 }

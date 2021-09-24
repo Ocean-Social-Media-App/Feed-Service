@@ -19,13 +19,17 @@ public class MessageListener {
 
     @RabbitListener(queues = MQConfig.POST)
     public void postListener(RabbitMessage message){
-        if(message.getOperation().equals("createPost")){
+
+
+
+    }
+/*        if(message.getOperation().equals("createPost")){
             this.postService.createPost(message.getPost());
         }
-        if(message.getOperation().equals("getAllPost")){
+*//*        if(message.getOperation().equals("getAllPost")){
             ///////////////////need to look at this one
-            this.postService.getAllPosts(1, Pageable.ofSize(3));
-        }
+            this.postService.getAllPosts(1);
+        }*//*
         if(message.getOperation().equals("lookForAPost")){
             this.postService.getPostById(message.getPost().getPostId());
         }
@@ -57,6 +61,6 @@ public class MessageListener {
             this.likeService.deleteLike(message.getLike().getLikeId());
         }
 
-    }
+    }*/
 
 }

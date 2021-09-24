@@ -28,6 +28,7 @@ public class PostController {
 
 
     //Create a Post
+    //Angular send message we receive
     @PostMapping
     public Response createPost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
         //Verify the JWT
@@ -46,20 +47,9 @@ public class PostController {
         return response;
     }
 
-    //Get All posts
-    @GetMapping("feed/{pageNumber}")
-    public Response getAllPost(@PathVariable Integer pageNumber, Pageable pageable){
-        Response response;
-        Page<Post> allPosts= this.postService.getAllPosts(pageNumber, pageable);
-        if(allPosts != null){
-            response = new Response(true, "here are 20 posts", allPosts);
-        }else{
-            response = new Response(false,"failed to find that page",null);
-        }
-        return response;
-    }
 
     //Read a post
+    //Angular send message we receive
     @GetMapping("{postId}")
     public Response lookForAPost(@PathVariable Integer postId){
         Response response;
@@ -73,7 +63,7 @@ public class PostController {
     }
 
     //Get Post by UserId
-    //Change to send newest to oldest
+    //Angular send message we receive
     @GetMapping("userId/{userId}")
     public Response lookForPostByUser(@PathVariable Integer userId){
         Response response;
@@ -88,6 +78,7 @@ public class PostController {
     }
 
     //Update a post
+    //Angular send message we receive
     @PutMapping
     public Response updatePost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
         //Verify the JWT
@@ -107,6 +98,7 @@ public class PostController {
     }
 
     //Delete a post
+    //Angular send message we receive
     @DeleteMapping("{postId}")
     public Response deletePost(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
         //Verify the JWT
