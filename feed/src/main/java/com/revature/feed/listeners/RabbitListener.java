@@ -8,10 +8,22 @@ import com.revature.feed.services.PostService;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Component;
 
-public class MessageListener {
+import java.util.List;
 
-    @Autowired
+@Component
+public class RabbitListener {
+
+    public static List<Integer> listFave;
+
+    @org.springframework.amqp.rabbit.annotation.RabbitListener(queues = MQConfig.USER)
+    public List<Integer> getListOfFollowersFromUserService(List<Integer> followersId){
+        listFave = followersId;
+        return listFave;
+    }
+
+/*    @Autowired
     PostService postService;
 
     @Autowired
@@ -23,7 +35,7 @@ public class MessageListener {
 
 
     }
-/*        if(message.getOperation().equals("createPost")){
+        if(message.getOperation().equals("createPost")){
             this.postService.createPost(message.getPost());
         }
 *//*        if(message.getOperation().equals("getAllPost")){

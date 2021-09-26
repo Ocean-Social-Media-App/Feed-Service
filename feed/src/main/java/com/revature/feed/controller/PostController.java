@@ -1,14 +1,13 @@
 package com.revature.feed.controller;
 
+import com.revature.feed.listeners.RabbitListener;
 import com.revature.feed.models.Post;
 import com.revature.feed.models.Response;
 import com.revature.feed.services.PostService;
+import com.revature.feed.services.RabbitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController("postController")
@@ -20,6 +19,8 @@ public class PostController {
     @Autowired
     public PostController(PostService postService){ this.postService = postService;}
 
+    @Autowired
+    private RabbitService rabbitService;
 
     //Create a Post
     //Angular send message we receive
@@ -29,20 +30,33 @@ public class PostController {
         Post tempPost = this.postService.createPost(post);
         if(tempPost != null){
             response = new Response(true, "Post has been created", post);
+
+            //Send message to user service let them know this userId just comment/create a post.
+            rabbitService.postNotification(post.getUserId());
+
         }else{
             response = new Response(false, "Post was not created", null);
         }
         return response;
     }
+
+
     @GetMapping("fave/{pageNumber}")
     public Response getPostFromFave(@PathVariable Integer pageNumber){
         Response response;
-        Integer userId = 2;
+        /*Integer userId = 2;
         Integer userId1 = 8;
         List<Integer> exampleList = new ArrayList<>();
         exampleList.add(userId);
-        exampleList.add(userId1);
-        List<Post> favePost = this.postService.selectPostForFav(pageNumber,exampleList);
+        exampleList.add(userId1);*/
+
+        //Send message to UserService ask for list of followers
+        Integer userId = 1;
+        rabbitService.requestListOfFollowers(userId);
+
+        //Listen to the User Service for the list of followers
+
+        List<Post> favePost = this.postService.selectPostForFav(pageNumber, RabbitListener.listFave);
         if(favePost != null){
             response = new Response(true,"Fave list", favePost);
         }else{
