@@ -22,7 +22,7 @@ public class RabbitService {
                 MQConfig.EXCHANGE,
                 MQConfig.LIKE,
                 //Send RabbitMessage object to user-server with postId,
-                new RabbitMessage(like.getUserId() + " just liked a post", like.getPost(), like)
+                new RabbitMessage(like.getUserId(), like.getPost().getPostId())
 
         );
         return "Like Notification success!";
@@ -32,7 +32,7 @@ public class RabbitService {
         template.convertAndSend(
                 MQConfig.EXCHANGE,
                 MQConfig.POST,
-                new RabbitMessage(post.getUserId() + " just comment a post", post, null)
+                new RabbitMessage(post.getUserId(), post.getPostId())
         );
         return "Post Notification success!";
     }
