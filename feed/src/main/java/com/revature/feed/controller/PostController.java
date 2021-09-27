@@ -36,7 +36,6 @@ public class PostController {
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-
         Response response;
         Post tempPost = this.postService.createPost(post);
         if(tempPost != null){
@@ -58,21 +57,10 @@ public class PostController {
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-//////////// need to modify this when rabbitmq is up and running
         Response response;
-        /*Integer userId = 2;
-        Integer userId1 = 8;
-        List<Integer> exampleList = new ArrayList<>();
-        exampleList.add(userId);
-        exampleList.add(userId1);*/
 
-        //Send message to UserService ask for list of followers
-        Integer userId = 1;
-        rabbitService.requestListOfFollowers(userId);
-
-        //Listen to the User Service for the list of followers
-        //Making sure we receive info
-
+        //Gets userId from Token and passes it to RabbitMQ to get favorite list from user service.
+        rabbitService.requestListOfFollowers(decoded.getClaims().get("userId").asInt());
 
         List<Post> favePost = this.postService.selectPostForFav(pageNumber, RabbitListener.listFave);
 
@@ -125,7 +113,7 @@ public class PostController {
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-
+////pull id from jwt
         Response response;
         List<Post> post = this.postService.getPostByUserId(userId);
         //If statement checks size as array is always returned
