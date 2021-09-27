@@ -20,11 +20,14 @@ public class PostController {
 
     private PostService postService;
 
-    @Autowired
-    JwtUtility jwtUtility;
+    //@Autowired
+    private JwtUtility jwtUtility;
 
     @Autowired
-    public PostController(PostService postService){ this.postService = postService;}
+    public PostController(PostService postService, JwtUtility jwtUtility){
+        this.postService = postService;
+        this.jwtUtility = jwtUtility;
+    }
 
 
     //Create a Post
