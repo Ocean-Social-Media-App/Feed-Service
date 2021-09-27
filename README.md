@@ -122,4 +122,3 @@ Tests:
     Integer likeId
     Integer userId not null
     Post post not null
-```
