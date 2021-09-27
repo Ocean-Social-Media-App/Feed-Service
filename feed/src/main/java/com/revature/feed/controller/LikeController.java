@@ -5,6 +5,7 @@ import com.revature.feed.config.JwtUtility;
 import com.revature.feed.models.Like;
 import com.revature.feed.models.Response;
 import com.revature.feed.services.LikeService;
+import com.revature.feed.services.RabbitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
@@ -24,7 +25,11 @@ public class LikeController {
     private Environment environment;
 
     @Autowired
+    private RabbitService rabbitService;
+
+    @Autowired
     JwtUtility jwtUtility;
+
 
     //Create a Like
     @PostMapping
@@ -39,6 +44,9 @@ public class LikeController {
         Like tempLike = this.likeService.createLike(like);
         if(tempLike != null){
             response = new Response(true, "Like has been added to post", like);
+
+            //Will send message to user service let them know this userID just like your post.
+            rabbitService.likeNotification(like);
         }else{
             response = new Response(false, "Your like was not created", null);
         }
