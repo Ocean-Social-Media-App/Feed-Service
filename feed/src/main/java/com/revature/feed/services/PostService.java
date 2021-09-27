@@ -112,7 +112,7 @@ public class PostService {
     public List<Post> getPostByUserId(Integer userId) {
         List<Post> database = this.postDao.getPostByUserId(userId);
         List<Post> filteredPosts = database.stream()
-                .filter(x -> x.getPostParentId().equals(null))
+                .filter(x -> x.getPostParentId() == null)
                 .collect(Collectors.toList());
         return filteredPosts;
     }

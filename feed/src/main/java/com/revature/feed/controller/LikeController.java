@@ -27,10 +27,9 @@ public class LikeController {
     JwtUtility jwtUtility;
 
     //Create a Like
-    //Angular send message we receive
     @PostMapping
     public Response createLike(@RequestBody Like like, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
@@ -46,10 +45,9 @@ public class LikeController {
         return response;
     }
     //Get all Likes by PostID
-    //Angular send message we receive
     @GetMapping("{postId}")
     public Response getLikeByPostId(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
@@ -66,16 +64,14 @@ public class LikeController {
 }
 
     //Get like PostId and by UserId
-    //Angular send message we receive
     @GetMapping("{postId}/{userId}")
     public Response getLikeByPostIdAndUserID(@PathVariable Integer postId, @PathVariable Integer userId,
                                              @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-
         Response response;
         boolean theyLikedIt = false;
        List<Like> like = this.likeService.getLikeByPostId(postId);
@@ -95,10 +91,9 @@ public class LikeController {
     }
 
     //Delete a Like
-    //Angular send message we receive
     @DeleteMapping("{likeId}")
     public Response deleteLike(@PathVariable Integer likeId, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);

@@ -28,10 +28,9 @@ public class PostController {
 
 
     //Create a Post
-    //Angular send message we receive
     @PostMapping
     public Response createPost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
@@ -49,12 +48,12 @@ public class PostController {
 
     @GetMapping("fave/{pageNumber}")
     public Response getPostFromFave(@PathVariable Integer pageNumber, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-
+//////////// need to modify this when rabbitmq is up and running
         Response response;
         Integer userId = 2;
         Integer userId1 = 8;
@@ -63,7 +62,7 @@ public class PostController {
         exampleList.add(userId1);
         List<Post> favePost = this.postService.selectPostForFav(pageNumber,exampleList);
         if(favePost != null){
-            response = new Response(true,"Fave list", favePost);
+            response = new Response(true,"Favorite list", favePost);
         }else{
             response = new Response(false,"You have reached the end", null);
         }
@@ -71,7 +70,6 @@ public class PostController {
     }
 
     //Read a post
-    //Angular send message we receive
     @GetMapping("{postId}")
     public Response lookForAPost(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
         //Verify the JWT - Andrew
@@ -91,18 +89,23 @@ public class PostController {
     }
 
     @GetMapping("comment/{postId}")
-    public Response getComment(@PathVariable Integer postId){
+    public Response getComment(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
+        //Verify the JWT
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "Invalid token", null);
+        }
         Response response;
         List<Post> comment = this.postService.getAllParentId(postId);
+        //Need to validate info being returned
         return response = new Response(true, "Here are the comments", comment);
     }
 
 
     //Get Post by UserId
-    //Angular send message we receive
     @GetMapping("userId/{userId}")
     public Response lookForPostByUser(@PathVariable Integer userId, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
@@ -120,10 +123,9 @@ public class PostController {
     }
 
     //Update a post
-    //Angular send message we receive
     @PutMapping
     public Response updatePost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
@@ -140,10 +142,9 @@ public class PostController {
     }
 
     //Delete a post
-    //Angular send message we receive
     @DeleteMapping("{postId}")
     public Response deletePost(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
