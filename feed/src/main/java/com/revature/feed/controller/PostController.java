@@ -32,7 +32,7 @@ public class PostController {
     @PostMapping
     public Response createPost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
@@ -53,7 +53,7 @@ public class PostController {
     @GetMapping("fave/{pageNumber}")
     public Response getPostFromFave(@PathVariable Integer pageNumber, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
@@ -76,7 +76,7 @@ public class PostController {
     @GetMapping("{postId}")
     public Response lookForAPost(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
         //Verify the JWT - Andrew
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
@@ -94,7 +94,7 @@ public class PostController {
     @GetMapping("comment/{postId}")
     public Response getComment(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
@@ -109,7 +109,7 @@ public class PostController {
     @GetMapping("userId/{userId}")
     public Response lookForPostByUser(@PathVariable Integer userId, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
@@ -129,7 +129,7 @@ public class PostController {
     @PutMapping
     public Response updatePost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
@@ -148,7 +148,7 @@ public class PostController {
     @DeleteMapping("{postId}")
     public Response deletePost(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }

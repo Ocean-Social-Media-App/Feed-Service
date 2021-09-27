@@ -35,7 +35,7 @@ public class LikeController {
     @PostMapping
     public Response createLike(@RequestBody Like like, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
@@ -57,7 +57,7 @@ public class LikeController {
     @GetMapping("{postId}")
     public Response getLikeByPostId(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
@@ -77,7 +77,7 @@ public class LikeController {
     public Response getLikeByPostIdAndUserID(@PathVariable Integer postId, @PathVariable Integer userId,
                                              @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
@@ -103,7 +103,7 @@ public class LikeController {
     @DeleteMapping("{likeId}")
     public Response deleteLike(@PathVariable Integer likeId, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
