@@ -9,7 +9,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class RabbitMessage {
-    String operation;
-    Post post;
-    Like like;
+    Integer userId;
+    Integer postId;
 }

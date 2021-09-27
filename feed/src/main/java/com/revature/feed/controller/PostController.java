@@ -1,16 +1,15 @@
 package com.revature.feed.controller;
 
+import com.revature.feed.listeners.RabbitListener;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.revature.feed.config.JwtUtility;
 import com.revature.feed.models.Post;
 import com.revature.feed.models.Response;
 import com.revature.feed.services.PostService;
+import com.revature.feed.services.RabbitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +25,8 @@ public class PostController {
     @Autowired
     public PostController(PostService postService){ this.postService = postService;}
 
+    @Autowired
+    private RabbitService rabbitService;
 
     //Create a Post
     @PostMapping
@@ -35,11 +36,14 @@ public class PostController {
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-
         Response response;
         Post tempPost = this.postService.createPost(post);
         if(tempPost != null){
             response = new Response(true, "Post has been created", post);
+
+            //Send message to user service let them know this userId just comment/create a post.
+            rabbitService.postNotification(post);
+
         }else{
             response = new Response(false, "Post was not created", null);
         }
@@ -53,14 +57,13 @@ public class PostController {
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-//////////// need to modify this when rabbitmq is up and running
         Response response;
-        Integer userId = 2;
-        Integer userId1 = 8;
-        List<Integer> exampleList = new ArrayList<>();
-        exampleList.add(userId);
-        exampleList.add(userId1);
-        List<Post> favePost = this.postService.selectPostForFav(pageNumber,exampleList);
+
+        //Gets userId from Token and passes it to RabbitMQ to get favorite list from user service.
+        rabbitService.requestListOfFollowers(decoded.getClaims().get("userId").asInt());
+
+        List<Post> favePost = this.postService.selectPostForFav(pageNumber, RabbitListener.listFave);
+
         if(favePost != null){
             response = new Response(true,"Favorite list", favePost);
         }else{
@@ -110,7 +113,7 @@ public class PostController {
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-
+////pull id from jwt
         Response response;
         List<Post> post = this.postService.getPostByUserId(userId);
         //If statement checks size as array is always returned
