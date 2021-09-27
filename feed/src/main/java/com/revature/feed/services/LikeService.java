@@ -14,7 +14,11 @@ public class LikeService {
     @Autowired
     public LikeService(LikeDao likeDao){this.likeDao = likeDao;}
 
+    @Autowired
+    private PostService postService;
+
     public Like createLike(Like like) {
+        like.setPost(this.postService.getPostById(like.getPost().getPostId()));
         return this.likeDao.save(like);
     }
 

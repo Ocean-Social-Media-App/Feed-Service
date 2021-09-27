@@ -17,24 +17,31 @@ public class RabbitService {
     @Autowired
     private RabbitTemplate template;
 
+    @Autowired
+    private PostService postService;
+
     public String likeNotification(Like like){
         template.convertAndSend(
                 MQConfig.EXCHANGE,
                 MQConfig.LIKE,
                 //Send RabbitMessage object to user-server with postId,
-                new RabbitMessage(like.getUserId(), like.getPost().getPostId())
+                new RabbitMessage(like.getUserId(), like.getPost().getPostId(), like.getPost().getUserId())
 
         );
         return "Like Notification success!";
     }
 
     public String postNotification(Post post){
-        template.convertAndSend(
-                MQConfig.EXCHANGE,
-                MQConfig.POST,
-                new RabbitMessage(post.getUserId(), post.getPostId())
-        );
-        return "Post Notification success!";
+        if(post.getPostParentId() != null ) {
+            //is a post or comment
+            template.convertAndSend(
+                    MQConfig.EXCHANGE,
+                    MQConfig.POST,
+                    new RabbitMessage(postService.getPostById(post.getPostParentId()).getUserId(), post.getPostId(), post.getUserId())
+            );
+            return "Post Notification success!";
+        }
+        return "No notification needed its a post";
     }
 
     public String requestListOfFollowers(Integer userId){
