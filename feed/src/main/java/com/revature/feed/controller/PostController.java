@@ -32,7 +32,7 @@ public class PostController {
             response = new Response(true, "Post has been created", post);
 
             //Send message to user service let them know this userId just comment/create a post.
-            rabbitService.postNotification(post.getUserId());
+            rabbitService.postNotification(post);
 
         }else{
             response = new Response(false, "Post was not created", null);
@@ -55,8 +55,11 @@ public class PostController {
         rabbitService.requestListOfFollowers(userId);
 
         //Listen to the User Service for the list of followers
+        //Making sure we receive info
+
 
         List<Post> favePost = this.postService.selectPostForFav(pageNumber, RabbitListener.listFave);
+
         if(favePost != null){
             response = new Response(true,"Fave list", favePost);
         }else{

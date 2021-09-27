@@ -1,6 +1,9 @@
 package com.revature.feed.services;
 
 import com.revature.feed.config.MQConfig;
+import com.revature.feed.models.Like;
+import com.revature.feed.models.Post;
+import com.revature.feed.models.RabbitMessage;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,22 +17,22 @@ public class RabbitService {
     @Autowired
     private RabbitTemplate template;
 
-    public String likeNotification(Integer userId){
+    public String likeNotification(Like like){
         template.convertAndSend(
                 MQConfig.EXCHANGE,
                 MQConfig.LIKE,
-                userId + "just liked your post."
+                //Send RabbitMessage object to user-server with postId,
+                new RabbitMessage(like.getUserId() + " just liked a post", like.getPost(), like)
 
         );
         return "Like Notification success!";
     }
 
-    public String postNotification(Integer userId){
+    public String postNotification(Post post){
         template.convertAndSend(
                 MQConfig.EXCHANGE,
                 MQConfig.POST,
-                userId + "just commented on your post."
-
+                new RabbitMessage(post.getUserId() + " just comment a post", post, null)
         );
         return "Post Notification success!";
     }
@@ -38,7 +41,7 @@ public class RabbitService {
         template.convertAndSend(
                 MQConfig.EXCHANGE,
                 MQConfig.USER,
-                "Please send us the follower list of this userId: " + userId
+                 userId
         );
         return "request to get follower list sent.";
     }

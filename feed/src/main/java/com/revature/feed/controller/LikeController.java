@@ -34,7 +34,7 @@ public class LikeController {
             response = new Response(true, "Like has been added to post", like);
 
             //Will send message to user service let them know this userID just like your post.
-            rabbitService.likeNotification(like.getUserId());
+            rabbitService.likeNotification(like);
         }else{
             response = new Response(false, "Your like was not created", null);
         }
