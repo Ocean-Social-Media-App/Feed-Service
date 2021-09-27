@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 public class RabbitMessage {
-    Integer userId;
-    Integer postId;
+    private int userIdFrom;
+    private int postId;
+    private int userIdTo;
 }

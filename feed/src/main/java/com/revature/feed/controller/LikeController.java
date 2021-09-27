@@ -43,10 +43,11 @@ public class LikeController {
         Response response;
         Like tempLike = this.likeService.createLike(like);
         if(tempLike != null){
-            response = new Response(true, "Like has been added to post", like);
+            System.out.println(tempLike);
+            response = new Response(true, "Like has been added to post", tempLike);
 
             //Will send message to user service let them know this userID just like your post.
-            rabbitService.likeNotification(like);
+            rabbitService.likeNotification(tempLike);
         }else{
             response = new Response(false, "Your like was not created", null);
         }
