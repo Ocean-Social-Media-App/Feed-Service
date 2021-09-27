@@ -1,16 +1,15 @@
 package com.revature.feed.controller;
 
+import com.revature.feed.listeners.RabbitListener;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.revature.feed.config.JwtUtility;
 import com.revature.feed.models.Post;
 import com.revature.feed.models.Response;
 import com.revature.feed.services.PostService;
+import com.revature.feed.services.RabbitService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,21 +28,25 @@ public class PostController {
         this.jwtUtility = jwtUtility;
     }
 
+    @Autowired
+    private RabbitService rabbitService;
 
     //Create a Post
-    //Angular send message we receive
     @PostMapping
     public Response createPost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-
         Response response;
         Post tempPost = this.postService.createPost(post);
         if(tempPost != null){
             response = new Response(true, "Post has been created", post);
+
+            //Send message to user service let them know this userId just comment/create a post.
+            rabbitService.postNotification(post);
+
         }else{
             response = new Response(false, "Post was not created", null);
         }
@@ -52,21 +55,20 @@ public class PostController {
 
     @GetMapping("fave/{pageNumber}")
     public Response getPostFromFave(@PathVariable Integer pageNumber, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-
         Response response;
-        Integer userId = 2;
-        Integer userId1 = 8;
-        List<Integer> exampleList = new ArrayList<>();
-        exampleList.add(userId);
-        exampleList.add(userId1);
-        List<Post> favePost = this.postService.selectPostForFav(pageNumber,exampleList);
+
+        //Gets userId from Token and passes it to RabbitMQ to get favorite list from user service.
+        rabbitService.requestListOfFollowers(decoded.getClaims().get("userId").asInt());
+
+        List<Post> favePost = this.postService.selectPostForFav(pageNumber, RabbitListener.listFave);
+
         if(favePost != null){
-            response = new Response(true,"Fave list", favePost);
+            response = new Response(true,"Favorite list", favePost);
         }else{
             response = new Response(false,"You have reached the end", null);
         }
@@ -74,7 +76,6 @@ public class PostController {
     }
 
     //Read a post
-    //Angular send message we receive
     @GetMapping("{postId}")
     public Response lookForAPost(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
         //Verify the JWT - Andrew
@@ -94,23 +95,28 @@ public class PostController {
     }
 
     @GetMapping("comment/{postId}")
-    public Response getComment(@PathVariable Integer postId){
+    public Response getComment(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
+        //Verify the JWT
+        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        if(decoded == null){
+            return new Response(false, "Invalid token", null);
+        }
         Response response;
         List<Post> comment = this.postService.getAllParentId(postId);
+        //Need to validate info being returned
         return response = new Response(true, "Here are the comments", comment);
     }
 
 
     //Get Post by UserId
-    //Angular send message we receive
     @GetMapping("userId/{userId}")
     public Response lookForPostByUser(@PathVariable Integer userId, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-
+////pull id from jwt
         Response response;
         List<Post> post = this.postService.getPostByUserId(userId);
         //If statement checks size as array is always returned
@@ -123,10 +129,9 @@ public class PostController {
     }
 
     //Update a post
-    //Angular send message we receive
     @PutMapping
     public Response updatePost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
@@ -143,10 +148,9 @@ public class PostController {
     }
 
     //Delete a post
-    //Angular send message we receive
     @DeleteMapping("{postId}")
     public Response deletePost(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);

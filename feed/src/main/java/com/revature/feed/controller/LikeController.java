@@ -5,6 +5,7 @@ import com.revature.feed.config.JwtUtility;
 import com.revature.feed.models.Like;
 import com.revature.feed.models.Response;
 import com.revature.feed.services.LikeService;
+import com.revature.feed.services.RabbitService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.*;
@@ -24,13 +25,16 @@ public class LikeController {
     private Environment environment;
 
     @Autowired
+    private RabbitService rabbitService;
+
+    @Autowired
     JwtUtility jwtUtility;
 
+
     //Create a Like
-    //Angular send message we receive
     @PostMapping
     public Response createLike(@RequestBody Like like, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
@@ -39,17 +43,20 @@ public class LikeController {
         Response response;
         Like tempLike = this.likeService.createLike(like);
         if(tempLike != null){
-            response = new Response(true, "Like has been added to post", like);
+            System.out.println(tempLike);
+            response = new Response(true, "Like has been added to post", tempLike);
+
+            //Will send message to user service let them know this userID just like your post.
+            rabbitService.likeNotification(tempLike);
         }else{
             response = new Response(false, "Your like was not created", null);
         }
         return response;
     }
     //Get all Likes by PostID
-    //Angular send message we receive
     @GetMapping("{postId}")
     public Response getLikeByPostId(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
@@ -66,16 +73,14 @@ public class LikeController {
 }
 
     //Get like PostId and by UserId
-    //Angular send message we receive
     @GetMapping("{postId}/{userId}")
     public Response getLikeByPostIdAndUserID(@PathVariable Integer postId, @PathVariable Integer userId,
                                              @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-
         Response response;
         boolean theyLikedIt = false;
        List<Like> like = this.likeService.getLikeByPostId(postId);
@@ -95,10 +100,9 @@ public class LikeController {
     }
 
     //Delete a Like
-    //Angular send message we receive
     @DeleteMapping("{likeId}")
     public Response deleteLike(@PathVariable Integer likeId, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
+        //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
