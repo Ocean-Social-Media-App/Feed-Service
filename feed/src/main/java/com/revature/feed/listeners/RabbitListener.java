@@ -12,7 +12,7 @@ public class RabbitListener {
 
     public static List<Integer> listFave;
 
-    @org.springframework.amqp.rabbit.annotation.RabbitListener(queues = MQConfig.USER)
+    @org.springframework.amqp.rabbit.annotation.RabbitListener(queues = MQConfig.FOLLOWINGS)
     public List<Integer> getListOfFollowersFromUserService(Set<Integer> followersId) {
         listFave = new ArrayList<>(followersId);
         return listFave;

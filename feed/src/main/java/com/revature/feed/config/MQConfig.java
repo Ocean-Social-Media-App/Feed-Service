@@ -11,7 +11,7 @@ public class MQConfig {
     public static final String POST ="post_queue";
     public static final String LIKE ="like_queue";
     public static final String USER = "user_queue";
-    public static final String ROUTING_KEY = "routing_key";
+    public static final String FOLLOWINGS = "following_queue";
     public static final String EXCHANGE = "exchange";
 
     @Bean
@@ -22,6 +22,9 @@ public class MQConfig {
 
     @Bean
     public Queue user() {return new Queue(USER);}
+
+    @Bean
+    public Queue followings() {return new Queue(FOLLOWINGS);}
 
     @Bean
     public TopicExchange exchange(){return new TopicExchange(EXCHANGE);}
@@ -48,6 +51,14 @@ public class MQConfig {
                 .bind(user())
                 .to(exchange())
                 .with(USER);
+    }
+
+    @Bean
+    public Binding followingsBinding(){
+        return BindingBuilder
+                .bind(followings())
+                .to(exchange())
+                .with(FOLLOWINGS);
     }
 
 
