@@ -1,3 +1,4 @@
+/*
 package com.revature.feed.listeners;
 
 import com.revature.feed.config.MQConfig;
@@ -18,3 +19,4 @@ public class RabbitListener {
         return listFave;
     }
 }
+*/
