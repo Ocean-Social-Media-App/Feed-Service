@@ -6,6 +6,7 @@ import com.revature.feed.config.JwtUtility;
 import com.revature.feed.models.Post;
 import com.revature.feed.models.Response;
 import com.revature.feed.services.PostService;
+import com.revature.feed.services.RabbitService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -37,9 +38,12 @@ class PostControllerTest {
     @Mock
     DecodedJWT decodedJWT;
 
+    @Mock
+    RabbitService rabbitService;
+
     @BeforeEach
     void setUp() {
-        this.postController = new PostController(postService, jwtUtility);
+        this.postController = new PostController(postService, jwtUtility, rabbitService);
     }
 
     @AfterEach
@@ -59,10 +63,11 @@ class PostControllerTest {
         Response expectedResult = new Response(true, "Post has been created", post);
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("jwt", "token string goes here"); //jwt is being mocked so the value can really be anything
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
 
-        Mockito.when(jwtUtility.verify(headers.get("jwt"))).thenReturn(decodedJWT);
+        Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
         Mockito.when(postService.createPost(post)).thenReturn(post);
+        Mockito.when(rabbitService.postNotification(post)).thenReturn("Ignoring...");
 
         //ACT
         Response actualResult = this.postController.createPost(post, headers);
@@ -84,9 +89,9 @@ class PostControllerTest {
         Response expectedResult = new Response(false, "Invalid token", null);
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("jwt", "token string goes here"); //jwt is being mocked so the value can really be anything
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
 
-        Mockito.when(this.jwtUtility.verify(headers.get("jwt"))).thenReturn(null);
+        Mockito.when(this.jwtUtility.verify(headers.get("authorization"))).thenReturn(null);
 
         //ACT
         Response actualResult = this.postController.createPost(post, headers);
@@ -108,9 +113,9 @@ class PostControllerTest {
         Response expectedResult = new Response(false, "Post was not created", null);
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("jwt", "token string goes here"); //jwt is being mocked so the value can really be anything
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
 
-        Mockito.when(jwtUtility.verify(headers.get("jwt"))).thenReturn(decodedJWT);
+        Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
         Mockito.when(postService.createPost(post)).thenReturn(null);
 
         //ACT
@@ -133,9 +138,9 @@ class PostControllerTest {
         Response expectedResult = new Response(true, "Here is the post", post);
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("jwt", "token string goes here"); //jwt is being mocked so the value can really be anything
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
 
-        Mockito.when(jwtUtility.verify(headers.get("jwt"))).thenReturn(decodedJWT);
+        Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
         Mockito.when(postService.getPostById(1)).thenReturn(post);
 
         //ACT
@@ -158,9 +163,9 @@ class PostControllerTest {
         Response expectedResult = new Response(false, "Post was not found",null);
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("jwt", "token string goes here"); //jwt is being mocked so the value can really be anything
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
 
-        Mockito.when(jwtUtility.verify(headers.get("jwt"))).thenReturn(decodedJWT);
+        Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
         Mockito.when(postService.getPostById(2)).thenReturn(null);
 
         //ACT
@@ -190,9 +195,9 @@ class PostControllerTest {
         Response expectedResult = new Response(true, "Here is the post", posts);
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("jwt", "token string goes here"); //jwt is being mocked so the value can really be anything
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
 
-        Mockito.when(jwtUtility.verify(headers.get("jwt"))).thenReturn(decodedJWT);
+        Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
         Mockito.when(postService.getPostByUserId(1)).thenReturn(posts);
 
         //ACT
@@ -222,9 +227,9 @@ class PostControllerTest {
         Response expectedResult = new Response(false, "Post was not found",null);
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("jwt", "token string goes here"); //jwt is being mocked so the value can really be anything
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
 
-        Mockito.when(jwtUtility.verify(headers.get("jwt"))).thenReturn(decodedJWT);
+        Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
         Mockito.when(postService.getPostByUserId(2)).thenReturn(new ArrayList<>());
 
         //ACT
@@ -248,9 +253,9 @@ class PostControllerTest {
         Response expectedResult = new Response(true,"Post has been updated",updatedPost);
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("jwt", "token string goes here"); //jwt is being mocked so the value can really be anything
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
 
-        Mockito.when(jwtUtility.verify(headers.get("jwt"))).thenReturn(decodedJWT);
+        Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
         Mockito.when(postService.updatePost(updatedPost)).thenReturn(updatedPost);
 
         //ACT
@@ -261,11 +266,89 @@ class PostControllerTest {
     }
 
     @Test
-    void deletePost() {
+    void updatePostUnsuccessfully() {
+        //unsuccessfully update a post given a post
+
+        //ASSIGN
+        Post updatedPost = new Post();
+        updatedPost.setPostId(1);
+        updatedPost.setPostText("Updated!");
+        updatedPost.setUserId(1);
+
+
+        Response expectedResult = new Response(false,"Post has not been updated", updatedPost);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
+
+        Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
+        Mockito.when(postService.updatePost(updatedPost)).thenReturn(null);
+
+        //ACT
+        Response actualResult = this.postController.updatePost(updatedPost, headers);
+
+        //ASSERT
+        assertEquals(expectedResult, actualResult);
     }
 
     @Test
-    void getPostFromFave() {
+    void deletePostSuccessfully() {
+        //successfully delete a post given a post
+
+        //ASSIGN
+        Post deletePost = new Post();
+        deletePost.setPostId(1);
+        deletePost.setPostText("Delete me! I dare you!");
+        deletePost.setUserId(1);
+
+
+        Response expectedResult = new Response(true,"Post was deleted", deletePost);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
+
+        Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
+        Mockito.when(postService.deletePost(1)).thenReturn(deletePost);
+
+        //ACT
+        Response actualResult = this.postController.deletePost(deletePost.getPostId(), headers);
+
+        //ASSERT
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    void deletePostUnsuccessfully() {
+        //unsuccessfully delete a post given a post
+
+        //ASSIGN
+        Post deletePost = new Post();
+        deletePost.setPostId(1);
+        deletePost.setPostText("Delete me! I dare you!");
+        deletePost.setUserId(1);
+
+
+        Response expectedResult = new Response(false,"There was an error deleting this post", null);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
+
+        Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
+        Mockito.when(postService.deletePost(1)).thenReturn(null);
+
+        //ACT
+        Response actualResult = this.postController.deletePost(deletePost.getPostId(), headers);
+
+        //ASSERT
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
+    void getPostFromFaveSuccessfully() {
+    }
+
+    @Test
+    void getPostFromFaveUnsuccessfully() {
     }
 
     @Test
