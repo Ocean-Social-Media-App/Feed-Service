@@ -13,7 +13,7 @@ public class MQConfig {
     public static final String POST ="post_queue";
     public static final String LIKE ="like_queue";
     public static final String USER = "user_queue";
-    public static final String FOLLOWINGS = "following_queue";
+    public static final String FOLLOWINGS = "follow_queue";
     public static final String EXCHANGE = "exchange";
 
     @Bean

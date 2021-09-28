@@ -1,6 +1,5 @@
 package com.revature.feed.controller;
 
-import com.revature.feed.listeners.RabbitListener;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.revature.feed.config.JwtUtility;
 import com.revature.feed.models.Post;
@@ -35,7 +34,7 @@ public class PostController {
     @PostMapping
     public Response createPost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
@@ -56,16 +55,15 @@ public class PostController {
     @GetMapping("fave/{pageNumber}")
     public Response getPostFromFave(@PathVariable Integer pageNumber, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
         Response response;
 
         //Gets userId from Token and passes it to RabbitMQ to get favorite list from user service.
-        rabbitService.requestListOfFollowers(decoded.getClaims().get("userId").asInt());
-
-        List<Post> favePost = this.postService.selectPostForFav(pageNumber, RabbitListener.listFave);
+        List<Integer> fave = rabbitService.requestListOfFollowers(decoded.getClaims().get("userId").asInt());
+        List<Post> favePost = this.postService.selectPostForFav(pageNumber, fave);
 
         if(favePost != null){
             response = new Response(true,"Favorite list", favePost);
@@ -78,8 +76,8 @@ public class PostController {
     //Read a post
     @GetMapping("{postId}")
     public Response lookForAPost(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
-        //Verify the JWT - Andrew
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        //Verify the JWT
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
@@ -97,7 +95,7 @@ public class PostController {
     @GetMapping("comment/{postId}")
     public Response getComment(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
@@ -112,7 +110,7 @@ public class PostController {
     @GetMapping("userId/{userId}")
     public Response lookForPostByUser(@PathVariable Integer userId, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
@@ -132,7 +130,7 @@ public class PostController {
     @PutMapping
     public Response updatePost(@RequestBody Post post, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
@@ -151,7 +149,7 @@ public class PostController {
     @DeleteMapping("{postId}")
     public Response deletePost(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
         //Verify the JWT
-        DecodedJWT decoded = jwtUtility.verify(headers.get("jwt"));
+        DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }

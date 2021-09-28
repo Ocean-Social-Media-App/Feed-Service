@@ -4,9 +4,9 @@ import com.revature.feed.config.MQConfig;
 import com.revature.feed.models.Like;
 import com.revature.feed.models.Post;
 import com.revature.feed.models.RabbitMessage;
-import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,13 +44,15 @@ public class RabbitService {
         return "No notification needed its a post";
     }
 
-    public String requestListOfFollowers(Integer userId){
-        template.convertAndSend(
+    public List<Integer> requestListOfFollowers(Integer userId){
+        return template.convertSendAndReceiveAsType(
                 MQConfig.EXCHANGE,
                 MQConfig.USER,
-                 userId
+                 userId,
+                new ParameterizedTypeReference<List<Integer>>(){
+
+                }
         );
-        return "request to get follower list sent.";
     }
 
 

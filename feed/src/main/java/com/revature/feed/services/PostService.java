@@ -59,7 +59,6 @@ public class PostService {
         for (int i = 0; i < fave.size(); i++) {
             //gets post by userId
             List<Post> userPost = this.postDao.getPostByUserId(fave.get(i));
-            System.out.println(userPost);
             //filters post if its parent Post or not
             List<Post> filteredPosts = userPost.stream()
                     .filter(x -> x.getPostParentId() == null)
@@ -72,8 +71,8 @@ public class PostService {
         int num = (int) (Math.ceil(checkPages));
         if (page <= num) {
             //Gets page requested and posts on that page
-            Integer pageEnd = page * 20;
-            Integer offset = page * 20 - 19;//Gets off set of next page
+            Integer pageEnd = page *20 -1;
+            Integer offset = page * 20 - 20;//Gets off set of next page
             List<Post> pagePost = new ArrayList<>();
             for (int j = offset; j < pageEnd; j++) {
                 if (fullListPost.size() == j) {
