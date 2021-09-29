@@ -18,10 +18,10 @@ public class PostController {
 
     private PostService postService;
 
-    //@Autowired
+    @Autowired
     private JwtUtility jwtUtility;
 
-    //@Autowired
+    @Autowired
     private RabbitService rabbitService;
 
     @Autowired
@@ -115,7 +115,6 @@ public class PostController {
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-////pull id from jwt
         Response response;
         List<Post> post = this.postService.getPostByUserId(userId);
         //If statement checks size as array is always returned

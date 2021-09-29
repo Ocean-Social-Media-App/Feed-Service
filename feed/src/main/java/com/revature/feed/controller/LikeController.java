@@ -53,6 +53,7 @@ public class LikeController {
         }
         return response;
     }
+
     //Get all Likes by PostID
     @GetMapping("{postId}")
     public Response getLikeByPostId(@PathVariable Integer postId, @RequestHeader Map<String, String> headers){
@@ -61,7 +62,6 @@ public class LikeController {
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-
         Response response;
     List<Like> like = this.likeService.getLikeByPostId(postId);
         if(like != null){
