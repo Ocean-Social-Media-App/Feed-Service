@@ -107,7 +107,6 @@ public class PostService {
         return this.postDao.findById(postId).orElse(null);
     }
 
-    //Get Post by UserId
     public List<Post> getPostByUserId(Integer userId, Integer pageNumber) {
         List<Post> database = this.postDao.getPostByUserId(userId);
         List<Post> filteredPosts = database.stream()

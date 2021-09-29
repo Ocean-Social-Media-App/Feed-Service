@@ -16,17 +16,11 @@ import java.io.IOException;
 @Service("s3Service")
 public class S3Service {
 
-    //We'll probably need these to be environment variables when we deploy but while we're testing this is fine.
-
     private String awsID = System.getenv("TEAMWATER_ACCESSKEY");
     private String awsKey = System.getenv("TEAMWATER_SECRETKEY");
     private String region = "us-east-2";
     private String bucketName = "teamwaterbucket";
     private String bucketUrl = "https://teamwaterbucket.s3.us-east-2.amazonaws.com/";
-
-    //https://teamwaterbucket.s3.us-east-2.amazonaws.com/users/UploadImageTestUser/images/ImageTest.jpg
-    //PathName = users/UploadImageTestUser/images/ImageTest.jpg
-
 
 
     BasicAWSCredentials awsCredentials;
@@ -34,20 +28,15 @@ public class S3Service {
     AmazonS3 s3Client;
 
     public S3Service(){
-        System.out.println("S3Service Constructor");
-
         awsCredentials = new BasicAWSCredentials(awsID, awsKey);
-
         s3Client = AmazonS3ClientBuilder
                 .standard()
                 .withRegion(Regions.fromName(region))
                 .withCredentials(new AWSStaticCredentialsProvider(awsCredentials))
                 .build();
-
     }
 
-    //We'll need the bucket name whenever we try to upload something.
-    // changed to return Response instead of String - Trevor
+    // changed to return Response instead of String
     private Response uploadFile(File file, String pathName){
         System.out.println("S3service.uploadFile");
         s3Client.putObject(bucketName, pathName, file);
@@ -59,70 +48,32 @@ public class S3Service {
         return new Response(true, "image uploaded",bucketUrl+pathName);
     }
 
-    //The pathname example in kevin's explanation of this concept was:
-    //"/kevsfolder/"+file.getName()
-    //The files, images, path names etc will probably upload to a user's personal folder.
 
-    //Which means that the path we're following would go /username/file type"+file.getName()
-    //For example, a profile picture for user SomeGuy would go:
-    //"/SomeGuy/profile.[file extension]
-
-    //Ask frontend how they'll handle grabbing profile images. Are we going to have a consistent image file named profile.jpg or something?
-    //Questions for later. For now, we know it works, and we're going to have this method return the file path so other
-    //parts of the program can use it later.
-
-    // made same changes in this method and uploadImage() - Trevor
+    // Upload Profile picture to S3 and returning URL
     public Response uploadProfileImage(MultipartFile multipartFile){
         File file = convertMultiPartFileToFile(multipartFile);
         String fileName = multipartFile.getOriginalFilename();
-
-        System.out.println("S3service.uploadProfileImage");
         String pathName = "users/images/profile/" + fileName;
         return uploadFile(file, pathName);
     }
 
+    // Upload Post picture to S3 and returning URL
     public Response uploadImage(MultipartFile multipartFile){
-        // added these 2 lines to convert and get file name - Trevor
         File file = convertMultiPartFileToFile(multipartFile);
         String fileName = multipartFile.getOriginalFilename();
-
-        System.out.println("S3service.uploadImage");
-        // no longer have the username here so adjusted pathName - Trevor
         String pathName = "users/images/" + fileName;
         return uploadFile(file, pathName);
     }
 
-    // added this method for file conversion - Trevor
+    // Sends file to S3
     private File convertMultiPartFileToFile(MultipartFile file) {
         File convertedFile = new File(file.getOriginalFilename());
         try (FileOutputStream fos = new FileOutputStream(convertedFile)) {
             fos.write(file.getBytes());
         } catch (IOException e) {
             e.printStackTrace();
-            System.out.println("Error in S3Service.convertMultiPartFileToFile");
         }
         return convertedFile;
     }
-
-    // not using for now - Trevor
-    /*public String uploadVideo(String username, File file){
-        System.out.println("S3service.uploadVideo");
-        String pathName = "users/" + username + "/videos/" + file.getName();
-        return uploadFile(file, pathName);
-
-    }*/
-
-    // Not using for now - Trevor
-    /*public String uploadProfileImage(User user, File file){
-        return uploadProfileImage(user.getUsername(), file);
-    }
-
-    public String uploadImage(User user, File file){
-        return uploadImage(user.getUsername(), file);
-    }
-
-    public String uploadVideo(User user, File file){
-        return uploadVideo(user.getUsername(), file);
-    }*/
 
 }

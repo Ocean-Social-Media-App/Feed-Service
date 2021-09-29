@@ -176,7 +176,7 @@ class PostControllerTest {
         assertEquals(expectedResult, actualResult);
     }
 
-    @Test
+/*    @Test
     void lookForPostByUserSuccessful() {
         //successfully get posts given a user ID
 
@@ -206,9 +206,9 @@ class PostControllerTest {
 
         //ASSERT
         assertEquals(expectedResult, actualResult);
-    }
+    }*/
 
-    @Test
+/*    @Test
     void lookForPostByUserUnsuccessful() {
         //unsuccessfully get posts given a user ID
 
@@ -238,7 +238,7 @@ class PostControllerTest {
 
         //ASSERT
         assertEquals(expectedResult, actualResult);
-    }
+    }*/
 
     @Test
     void updatePostSuccessfully() {
