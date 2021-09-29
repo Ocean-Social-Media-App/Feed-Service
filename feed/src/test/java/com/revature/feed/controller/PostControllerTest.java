@@ -23,6 +23,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/*
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class PostControllerTest {
@@ -239,7 +240,7 @@ class PostControllerTest {
         assertEquals(expectedResult, actualResult);
     }*/
 
-    @Test
+/*    @Test
     void updatePostSuccessfully() {
         //successfully update a post given a post
 
@@ -353,5 +354,6 @@ class PostControllerTest {
 
     @Test
     void getComment() {
-    }
-}
+    }*/
+//}
+

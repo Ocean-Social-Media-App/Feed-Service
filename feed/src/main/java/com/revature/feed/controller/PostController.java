@@ -176,8 +176,6 @@ public class PostController {
      * @return true and returns 20 post of that user.
      * @return false and returns null if no posts are returned or they have reached the end of the user's posts.
      */
-    //Get Post by UserId
-    //pagination
     @GetMapping("userId/{userId}/{pageNumber}")
     public Response lookForPostByUser(@PathVariable Integer userId, @PathVariable Integer pageNumber, @RequestHeader Map<String, String> headers){
         DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
