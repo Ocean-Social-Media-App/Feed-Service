@@ -19,13 +19,17 @@ public class PostController {
     private PostService postService;
 
     @Autowired
-    JwtUtility jwtUtility;
-
-    @Autowired
-    public PostController(PostService postService){ this.postService = postService;}
+    private JwtUtility jwtUtility;
 
     @Autowired
     private RabbitService rabbitService;
+
+    @Autowired
+    public PostController(PostService postService, JwtUtility jwtUtility, RabbitService rabbitService){
+        this.postService = postService;
+        this.jwtUtility = jwtUtility;
+        this.rabbitService = rabbitService;
+    }
 
     //Create a Post
     @PostMapping
@@ -111,7 +115,6 @@ public class PostController {
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
-////pull id from jwt
         Response response;
         List<Post> post = this.postService.getPostByUserId(userId);
         //If statement checks size as array is always returned

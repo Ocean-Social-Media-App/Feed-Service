@@ -21,23 +21,6 @@ public class JwtUtility {
     public static final Algorithm algorithm = Algorithm.HMAC256(SECRET);
     public static final JWTVerifier verifier = JWT.require(algorithm).build();
 
-//    Method for generating a JSON Web Token.  Not needed for feed service.
-    /*public String genToken(Integer userId) {
-        try {
-//            Map<String, String> payloads = new HashMap<>();
-//            payloads.put("userId", "12312");
-//            payloads.put("uesrName", "username");
-//            String token = JWT.create().withPayload(payloads).sign(algorithm);
-//            return token;
-            return JWT.create().withClaim("userId", userId)
-                    .withExpiresAt(new Date(System.currentTimeMillis() + 10 * 60 * 1000))
-                    .sign(algorithm);
-        } catch (JWTCreationException exception){
-            exception.printStackTrace();
-        }
-        return null;
-    }*/
-
 //    Method for verifying that a given token is valid or not.
     public DecodedJWT verify(String token) {
         try {
