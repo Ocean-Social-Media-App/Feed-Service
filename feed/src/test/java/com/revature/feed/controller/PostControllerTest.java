@@ -436,6 +436,7 @@ class PostControllerTest {
     @Test
     void getComment() {
         //get comments given a post ID
+        //it will always return a successful response
 
         //ASSIGN
         Post comment1 = new Post();
