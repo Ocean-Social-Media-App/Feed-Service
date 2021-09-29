@@ -9,6 +9,35 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import java.util.Date;
 
+/**
+ * @author Andrew Patrick
+ * @author Ezequiel Flores
+ * @author Joan Gorsky
+ * @author Shane Danner
+ * @author Thanh Nguyen
+ *
+ * The post model is used to create the Post object. The post object will contain the following data:
+ *  -postId
+ *  -postParentId
+ *  -postPicUrl
+ *  -postText
+ *
+ * Lombok is used to reduce repetitive code. The lombok annotations used in this class are the following:
+ *  -@Data
+ *  -@NoArgsConstructor
+ *  -@AllArgsConstructor
+ *
+ * Hibernate annotations are used to create the database table (posts table) The hibernate annotations used are the following:
+ *  -@Entity
+ *  -@Table
+ *  -@Id
+ *  -@Column
+ *  -@GeneratedValue
+ *  -@CreationTimestamp
+ *
+ * The @JsonFormat annotation from the Jackson library was used to give the format need to the postTime variable.
+ *
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

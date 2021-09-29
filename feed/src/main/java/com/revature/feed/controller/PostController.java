@@ -108,15 +108,15 @@ public class PostController {
 
 
     //Get Post by UserId
-    @GetMapping("userId/{userId}")
-    public Response lookForPostByUser(@PathVariable Integer userId, @RequestHeader Map<String, String> headers){
+    @GetMapping("userId/{userId}/{pageNumber}")
+    public Response lookForPostByUser(@PathVariable Integer userId, @PathVariable Integer pageNumber, @RequestHeader Map<String, String> headers){
         //Verify the JWT
         DecodedJWT decoded = jwtUtility.verify(headers.get("authorization"));
         if(decoded == null){
             return new Response(false, "Invalid token", null);
         }
         Response response;
-        List<Post> post = this.postService.getPostByUserId(userId);
+        List<Post> post = this.postService.getPostByUserId(userId,pageNumber);
         //If statement checks size as array is always returned
         if (post.size() <= 0) {
             response = new Response(false, "Post was not found",null);
