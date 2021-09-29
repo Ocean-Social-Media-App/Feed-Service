@@ -18,14 +18,18 @@ public class PostController {
 
     private PostService postService;
 
-    @Autowired
-    JwtUtility jwtUtility;
+    //@Autowired
+    private JwtUtility jwtUtility;
 
-    @Autowired
-    public PostController(PostService postService){ this.postService = postService;}
-
-    @Autowired
+    //@Autowired
     private RabbitService rabbitService;
+
+    @Autowired
+    public PostController(PostService postService, JwtUtility jwtUtility, RabbitService rabbitService){
+        this.postService = postService;
+        this.jwtUtility = jwtUtility;
+        this.rabbitService = rabbitService;
+    }
 
     //Create a Post
     @PostMapping
