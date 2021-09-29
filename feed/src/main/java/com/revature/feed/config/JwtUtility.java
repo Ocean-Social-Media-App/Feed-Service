@@ -19,7 +19,7 @@ import java.util.Date;
  */
 @Component
 public class JwtUtility {
-    public static final String SECRET = System.getenv("JWT_SECRET");
+    public static final String SECRET = "Ocean-Kevin-Child";
     public static final Algorithm algorithm = Algorithm.HMAC256(SECRET);
     public static final JWTVerifier verifier = JWT.require(algorithm).build();
 

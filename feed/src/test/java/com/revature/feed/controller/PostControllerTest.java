@@ -240,7 +240,7 @@ class PostControllerTest {
         assertEquals(expectedResult, actualResult);
     }*/
 
-    @Test
+/*    @Test
     void updatePostSuccessfully() {
         //successfully update a post given a post
 
