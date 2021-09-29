@@ -6,7 +6,13 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
+/**
+ * @author Andrew Patrick
+ * @author Ezequiel Flores
+ * @author Joan Gorsky
+ * @author Shane Danner
+ * @author Thanh Nguyen
+ */
 @Configuration
 public class MQConfig {
 
@@ -63,11 +69,15 @@ public class MQConfig {
                 .with(FOLLOWINGS);
     }
 
-
+    /**
+     * <p>This is used to convert message to be able to send in RabbitMQ</p>
+     */
     @Bean
     public MessageConverter messageConverter(){return new Jackson2JsonMessageConverter();
     }
-
+    /**
+     * <p>Template used for sending the RabbitMQ messages</p>
+     */
     @Bean
     public AmqpTemplate template(ConnectionFactory connectionFactory){
         RabbitTemplate template = new RabbitTemplate(connectionFactory);
