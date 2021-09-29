@@ -18,8 +18,8 @@ public class S3Service {
 
     //We'll probably need these to be environment variables when we deploy but while we're testing this is fine.
 
-    private String awsID = System.getenv("TEAMWATER_ACCESSKEY");
-    private String awsKey = System.getenv("TEAMWATER_SECRETKEY");
+   // private String awsID = System.getenv("AKIAVY6OVAQNLVTYUXTD");
+    //private String awsKey = System.getenv("dusmJiffnfpHQ/TQ+VLRUJuGK62256cRK3IRawB8");
     private String region = "us-east-2";
     private String bucketName = "teamwaterbucket";
     private String bucketUrl = "https://teamwaterbucket.s3.us-east-2.amazonaws.com/";
@@ -36,7 +36,7 @@ public class S3Service {
     public S3Service(){
         System.out.println("S3Service Constructor");
 
-        awsCredentials = new BasicAWSCredentials(awsID, awsKey);
+        awsCredentials = new BasicAWSCredentials("AKIAVY6OVAQNLVTYUXTD", "dusmJiffnfpHQ/TQ+VLRUJuGK62256cRK3IRawB8");
 
         s3Client = AmazonS3ClientBuilder
                 .standard()
