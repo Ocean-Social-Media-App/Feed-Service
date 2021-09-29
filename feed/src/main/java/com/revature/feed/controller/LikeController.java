@@ -16,19 +16,26 @@ import java.util.Map;
 @RestController("likeController")
 @RequestMapping(value= "like")
 public class LikeController {
+
     private LikeService likeService;
 
-    @Autowired
-    public LikeController(LikeService likeService){ this.likeService = likeService;}
-
-    @Autowired
-    private Environment environment;
-
-    @Autowired
+    //@Autowired
     private RabbitService rabbitService;
 
+    //@Autowired
+    private JwtUtility jwtUtility;
+
     @Autowired
-    JwtUtility jwtUtility;
+    public LikeController(LikeService likeService, RabbitService rabbitService, JwtUtility jwtUtility){
+        this.likeService = likeService;
+        this.rabbitService = rabbitService;
+        this.jwtUtility = jwtUtility;
+
+    }
+
+    //doesn't actually do anything???
+    /*@Autowired
+    private Environment environment;*/
 
 
     //Create a Like
@@ -43,7 +50,7 @@ public class LikeController {
         Response response;
         Like tempLike = this.likeService.createLike(like);
         if(tempLike != null){
-            System.out.println(tempLike);
+            //System.out.println(tempLike);
             response = new Response(true, "Like has been added to post", tempLike);
 
             //Will send message to user service let them know this userID just like your post.
