@@ -4,11 +4,11 @@
 Revature social network application to connect and interact with friends
 
 ## Members:
+* Andrew Patrick
+* Ezequiel Flores
+* Joan Gorsky
 * Shane Danner
 * Thanh Nguyen
-* Ezequiel Flores
-* Andrew Patrick
-* Joan Gorsky
 
 ## Resource Links:
 
@@ -96,7 +96,7 @@ Tests:
 | Get Likes by PostId     |  `GET /api/feed/like/{postId}`         |
 | Delete Like             |  `DELETE /api/feed/like/{likeId}`      |
 
-## Models (Non-finished list)
+## Models
 ### Post Model
 ```
     Integer postId: serial
