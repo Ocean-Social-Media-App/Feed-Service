@@ -27,7 +27,7 @@ import java.util.Date;
  *  -@NoArgsConstructor
  *  -@AllArgsConstructor
  *
- * Hibernate annotations are used to create the database table (posts table) The hibernate annotations used are the following:
+ * Hibernate annotations are used to create the database table (posts table). The hibernate annotations used are the following:
  *  -@Entity
  *  -@Table
  *  -@Id
