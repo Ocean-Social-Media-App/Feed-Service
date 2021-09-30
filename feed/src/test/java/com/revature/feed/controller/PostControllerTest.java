@@ -7,6 +7,7 @@ import com.revature.feed.models.Post;
 import com.revature.feed.models.Response;
 import com.revature.feed.services.PostService;
 import com.revature.feed.services.RabbitService;
+import jdk.nashorn.internal.ir.annotations.Ignore;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/*
+
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
 class PostControllerTest {
@@ -240,7 +241,7 @@ class PostControllerTest {
         assertEquals(expectedResult, actualResult);
     }*/
 
-/*    @Test
+    @Test
     void updatePostSuccessfully() {
         //successfully update a post given a post
 
@@ -343,17 +344,136 @@ class PostControllerTest {
         //ASSERT
         assertEquals(expectedResult, actualResult);
     }
-
+    @Ignore
     @Test
     void getPostFromFaveSuccessfully() {
-    }
+        //successfully get favorite posts given a "page number"
 
+        //ASSIGN
+        List<Integer> fave = new ArrayList<>();
+        fave.add(1);
+        fave.add(2);
+        fave.add(3);
+
+        Post post1 = new Post();
+        post1.setPostId(1);
+        post1.setPostText("This is a post!");
+        post1.setUserId(1);
+        Post post2 = new Post();
+        post2.setPostId(2);
+        post2.setPostText("This is a post!");
+        post2.setUserId(1);
+        Post post3 = new Post();
+        post3.setPostId(3);
+        post3.setPostText("This is a post!");
+        post3.setUserId(1);
+
+        List<Post> favePost = new ArrayList<>();
+        favePost.add(post1);
+        favePost.add(post2);
+        favePost.add(post3);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
+
+        Response expectedResult = new Response(true,"Favorite list", favePost);
+
+        Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
+        Mockito.when(decodedJWT.getClaims().get("userId").asInt()).thenReturn(2);
+        Mockito.when(rabbitService.requestListOfFollowers(2)).thenReturn(fave);
+        Mockito.when(postService.selectPostForFav(1, fave)).thenReturn(favePost);
+
+        //ACT
+        Response actualResult = this.postController.getPostFromFave(1, headers);
+
+        //ASSERT
+        assertEquals(expectedResult, actualResult);
+    }
+    @Ignore
     @Test
     void getPostFromFaveUnsuccessfully() {
+        //unsuccessfully get favorite posts given a "page number"
+
+        //ASSIGN
+        List<Integer> fave = new ArrayList<>();
+        fave.add(1);
+        fave.add(2);
+        fave.add(3);
+
+        /*Post post1 = new Post();
+        post1.setPostId(1);
+        post1.setPostText("This is a post!");
+        post1.setUserId(1);
+        Post post2 = new Post();
+        post2.setPostId(2);
+        post2.setPostText("This is a post!");
+        post2.setUserId(1);
+        Post post3 = new Post();
+        post3.setPostId(3);
+        post3.setPostText("This is a post!");
+        post3.setUserId(1);
+        List<Post> favePost = new ArrayList<>();
+        favePost.add(post1);
+        favePost.add(post2);
+        favePost.add(post3);*/
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
+
+        Response expectedResult = new Response(false,"You have reached the end", null);
+
+        Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
+        //Mockito.when(decodedJWT.getClaims().get("userId").asInt()).thenReturn(2);
+        Mockito.when(rabbitService.requestListOfFollowers(2)).thenReturn(fave);
+        Mockito.when(postService.selectPostForFav(2, fave)).thenReturn(null);
+
+        //ACT
+        Response actualResult = this.postController.getPostFromFave(2, headers);
+
+        //ASSERT
+        assertEquals(expectedResult, actualResult);
     }
 
     @Test
     void getComment() {
-    }*/
-//}
+        //get comments given a post ID
+        //it will always return a successful response
+
+        //ASSIGN
+        Post comment1 = new Post();
+        comment1.setPostId(2);
+        comment1.setUserId(2);
+        comment1.setPostText("This is a comment!");
+        comment1.setPostParentId(1);
+        Post comment2 = new Post();
+        comment2.setPostId(3);
+        comment2.setUserId(2);
+        comment2.setPostText("This is a comment!");
+        comment2.setPostParentId(1);
+        Post comment3 = new Post();
+        comment3.setPostId(4);
+        comment3.setUserId(2);
+        comment3.setPostText("This is a comment!");
+        comment3.setPostParentId(1);
+
+        List<Post> comment = new ArrayList<>();
+        comment.add(comment1);
+        comment.add(comment2);
+        comment.add(comment3);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
+
+        Response expectedResult = new Response(true, "Here are the comments", comment);
+
+        Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
+        Mockito.when(postService.getAllParentId(1)).thenReturn(comment);
+
+        //ACT
+        Response actualResult = this.postController.getComment(1, headers);
+
+        //ASSERT
+        assertEquals(expectedResult, actualResult);
+    }
+}
 

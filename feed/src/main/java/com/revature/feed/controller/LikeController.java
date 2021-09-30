@@ -21,19 +21,22 @@ import java.util.Map;
 @RestController("likeController")
 @RequestMapping(value= "like")
 public class LikeController {
+
     private LikeService likeService;
 
-    @Autowired
-    public LikeController(LikeService likeService){ this.likeService = likeService;}
-
-    @Autowired
-    private Environment environment;
-
-    @Autowired
+    //@Autowired
     private RabbitService rabbitService;
 
+    //@Autowired
+    private JwtUtility jwtUtility;
+
     @Autowired
-    JwtUtility jwtUtility;
+    public LikeController(LikeService likeService, RabbitService rabbitService, JwtUtility jwtUtility){
+        this.likeService = likeService;
+        this.rabbitService = rabbitService;
+        this.jwtUtility = jwtUtility;
+
+    }
 
     /**
      * @param like
