@@ -1,9 +1,5 @@
 # Feed Microservice
 
-## To Do
-* Session Management (using JWT)
-* Notifications (using RabbitMQ)
-
 # Ocean Social Media App
 Revature social network application to connect and interact with friends
 

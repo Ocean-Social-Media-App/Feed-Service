@@ -107,13 +107,32 @@ public class PostService {
         return this.postDao.findById(postId).orElse(null);
     }
 
-    //Get Post by UserId
-    public List<Post> getPostByUserId(Integer userId) {
+    public List<Post> getPostByUserId(Integer userId, Integer pageNumber) {
         List<Post> database = this.postDao.getPostByUserId(userId);
         List<Post> filteredPosts = database.stream()
                 .filter(x -> x.getPostParentId() == null)
                 .collect(Collectors.toList());
-        return filteredPosts;
+
+        Collections.sort(filteredPosts, Comparator.comparingInt(Post::getPostId).reversed());
+        Double checkPages = Double.valueOf(filteredPosts.size()) / 20;
+        int num = (int) (Math.ceil(checkPages));
+        if (pageNumber <= num) {
+            //Gets page requested and posts on that page
+            Integer pageEnd = pageNumber *20 -1;
+            Integer offset = pageNumber * 20 - 20;//Gets off set of next page
+            List<Post> pagePost = new ArrayList<>();
+            for (int j = offset; j < pageEnd; j++) {
+                if (filteredPosts.size() == j) {
+                    break;
+                } else {
+                    pagePost.add(filteredPosts.get(j));
+                }
+            }
+            return pagePost;
+        }else{
+            return null;
+        }
+
     }
 
 
