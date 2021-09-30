@@ -62,7 +62,7 @@ public class LikeController {
 
             /**
             * @param tempLike
-             * <p>Sends message to user service for notification feature. This notifies the user of a like made to their post.</p>
+            *Sends message to user service for notification feature. This notifies the user of a like made to their post.
             * */
             rabbitService.likeNotification(tempLike);
         }else{
@@ -100,7 +100,7 @@ public class LikeController {
      * @param headers
      *         -Contains the token to validate user.
      *
-     * <p>This is used to check if user has "liked" a post or not.</p>
+     * This is used to check if user has "liked" a post or not.
      *
      * @return null if user token is invalid.
      * @return true if they have already "liked" a post.
@@ -137,7 +137,7 @@ public class LikeController {
      * @param headers
      *         -Contains the token to validate user.
      *
-     * <p>This is remove a like from the database.</p>
+     * This is remove a like from the database.
      *
      * @return null if user token is invalid.
      * @return true if the like was removed.

@@ -38,7 +38,6 @@ public class S3Service {
 
     // changed to return Response instead of String
     private Response uploadFile(File file, String pathName){
-        System.out.println("S3service.uploadFile");
         s3Client.putObject(bucketName, pathName, file);
 
         // once the file is uploaded to amazon, we no longer need it on the server - Trevor
