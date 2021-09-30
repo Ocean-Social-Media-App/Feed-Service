@@ -435,7 +435,48 @@ class PostControllerTest {
     }
 
     @Test
-    void getComment() {
+    void getCommentReturnSuccessfully() {
+        //get comments given a post ID
+        //it will always return a successful response
+
+        //ASSIGN
+        Post comment1 = new Post();
+        comment1.setPostId(2);
+        comment1.setUserId(2);
+        comment1.setPostText("This is a comment!");
+        comment1.setPostParentId(1);
+        Post comment2 = new Post();
+        comment2.setPostId(3);
+        comment2.setUserId(2);
+        comment2.setPostText("This is a comment!");
+        comment2.setPostParentId(1);
+        Post comment3 = new Post();
+        comment3.setPostId(4);
+        comment3.setUserId(2);
+        comment3.setPostText("This is a comment!");
+        comment3.setPostParentId(1);
+
+        List<Post> comment = new ArrayList<>();
+        comment.add(comment1);
+        comment.add(comment2);
+        comment.add(comment3);
+
+        Map<String, String> headers = new HashMap<>();
+        headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
+
+        Response expectedResult = new Response(true, "Here are the comments", comment);
+
+        Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
+        Mockito.when(postService.getAllParentId(1)).thenReturn(comment);
+
+        //ACT
+        Response actualResult = this.postController.getComment(1, headers);
+
+        //ASSERT
+        assertEquals(expectedResult, actualResult);
+    }
+    @Test
+    void getCommentReturnUnsuccessfully() {
         //get comments given a post ID
         //it will always return a successful response
 

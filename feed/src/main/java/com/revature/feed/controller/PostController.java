@@ -41,7 +41,7 @@ public class PostController {
      * @param headers
      *         -Contains the token to validate user.
      *
-     * <p>This is to add a post to the database.</p>
+     * This is to add a post to the database.
      *
      * @return null if user token is invalid.
      * @return true if the post was added to the database.
@@ -60,9 +60,8 @@ public class PostController {
 
             /**
              * @param post
-             * <p>Sends message to user service for notification feature. This notifies the user of a post was made in relations to a user.</p>
+             * Sends message to user service for notification feature. This notifies the user of a post was made in relations to a user.
              * */
-            //Send message to user service let them know this userId just comment/create a post.
             rabbitService.postNotification(post);
 
         }else{
@@ -76,7 +75,7 @@ public class PostController {
      * @param headers
      *         -Contains the token to validate user.
      *
-     * <p>Returns the post of the "Favorites" the user is following</p>
+     * Returns the post of the "Favorites" the user is following
      *
      * @return null if user token is invalid.
      * @return true and returns the posts of the "Favorites".
@@ -91,7 +90,7 @@ public class PostController {
         Response response;
         /**
          * @param userId
-         * <p>Sends a message to User-Service to get the list of userIds' for "Favorite" list so we can return the posts for those users.</p>
+         * Sends a message to User-Service to get the list of userIds' for "Favorite" list so we can return the posts for those users.
          * */
         List<Integer> fave = rabbitService.requestListOfFollowers(decoded.getClaims().get("userId").asInt());
         List<Post> favePost = this.postService.selectPostForFav(pageNumber, fave);
@@ -109,7 +108,7 @@ public class PostController {
      * @param headers
      *         -Contains the token to validate user.
      *
-     * <p>Returns the single post the user requests</p>
+     * Returns the single post the user requests.
      *
      * @return null if user token is invalid.
      * @return true and returns the single post requested.
@@ -139,7 +138,7 @@ public class PostController {
      * @param headers
      *         -Contains the token to validate user.
      *
-     * <p>Returns the comments on a post or the comments on a comment.</p>
+     * Returns the comments on a post or the comments on a comment.
      *
      * @return null if user token is invalid.
      * @return true and returns the comments on a post.
@@ -170,7 +169,7 @@ public class PostController {
      * @param headers
      *         -Contains the token to validate user.
      *
-     * <p>Returns the posts of a user 20 at a time.</p>
+     * Returns the posts of a user 20 at a time.
      *
      * @return null if user token is invalid.
      * @return true and returns 20 post of that user.
@@ -197,7 +196,7 @@ public class PostController {
      * @param headers
      *         -Contains the token to validate user.
      *
-     * <p>Allows the user to update a post/comment they have already made.</p>
+     * Allows the user to update a post/comment they have already made.
      *
      * @return null if user token is invalid.
      * @return true and returns the updated post/comment.
@@ -224,7 +223,7 @@ public class PostController {
      * @param headers
      *         -Contains the token to validate user.
      *
-     * <p>Allows the user to delete a post/comment they have already made.</p>
+     * Allows the user to delete a post/comment they have already made.
      *
      * @return null if user token is invalid.
      * @return true and returns the deleted post/comment.

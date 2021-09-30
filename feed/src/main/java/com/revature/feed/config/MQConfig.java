@@ -70,13 +70,13 @@ public class MQConfig {
     }
 
     /**
-     * <p>This is used to convert message to be able to send in RabbitMQ</p>
+     * This is used to convert message to be able to send in RabbitMQ
      */
     @Bean
     public MessageConverter messageConverter(){return new Jackson2JsonMessageConverter();
     }
     /**
-     * <p>Template used for sending the RabbitMQ messages</p>
+     * Template used for sending the RabbitMQ messages
      */
     @Bean
     public AmqpTemplate template(ConnectionFactory connectionFactory){
