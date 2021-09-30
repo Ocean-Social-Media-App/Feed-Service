@@ -2,7 +2,6 @@
 * Java 8+
 * Docker
 * Maven
-* Port 9002 available
 
 # Env Variable
 * EMAIL_OCEANUN=[GMAIL-USERNAME]
