@@ -12,6 +12,7 @@ import java.util.List;
 @Repository("likeDao")
 @Transactional
 public interface LikeDao extends JpaRepository<Like, Integer> {
+
     //Custom Query to get the Post by the UserId
     @Query("from Like where post_id = :postId")
     List<Like> getLikesByPostId(@Param("postId") Integer postId);

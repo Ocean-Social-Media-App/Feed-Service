@@ -27,7 +27,7 @@ import java.util.Date;
  *  -@NoArgsConstructor
  *  -@AllArgsConstructor
  *
- * Hibernate annotations are used to create the database table (posts table) The hibernate annotations used are the following:
+ * Hibernate annotations are used to create the database table (posts table). The hibernate annotations used are the following:
  *  -@Entity
  *  -@Table
  *  -@Id
@@ -50,9 +50,6 @@ public class Post {
     @GeneratedValue(strategy =GenerationType.IDENTITY)
     private Integer postId;
 
-    //fk for the post it belongs to
-    //If its the 1st post this will be null
-    //any post that reference will contain this.
     @Column(name="postParentId")
     private Integer postParentId;
 
