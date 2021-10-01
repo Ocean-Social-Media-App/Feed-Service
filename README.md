@@ -120,6 +120,8 @@ Tests:
     Post post not null
 ```
 ### RabbitMessage Model
-    Integer userIdFrom;
-    Integer postId;
-    Integer userIdTo;
+```
+    Integer userIdFrom
+    Integer postId
+    Integer userIdTo
+```
