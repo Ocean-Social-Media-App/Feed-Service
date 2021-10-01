@@ -118,3 +118,8 @@ Tests:
     Integer likeId
     Integer userId not null
     Post post not null
+```
+### RabbitMessage Model
+    Integer userIdFrom;
+    Integer postId;
+    Integer userIdTo;
