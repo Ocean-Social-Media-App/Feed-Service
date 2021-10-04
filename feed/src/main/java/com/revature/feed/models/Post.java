@@ -60,7 +60,7 @@ public class Post {
     private String postText;
 
     @CreationTimestamp
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.NUMBER)
     private Date postTime;
 
     @Column(name="postYouUrl")
