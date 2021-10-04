@@ -65,7 +65,7 @@ public class RabbitService {
             template.convertAndSend(
                     MQConfig.EXCHANGE,
                     MQConfig.POST,
-                    new RabbitMessage(postService.getPostById(post.getPostParentId()).getUserId(), post.getPostId(), post.getUserId())
+                    new RabbitMessage(post.getUserId(), post.getPostId(), postService.getPostById(post.getPostParentId()).getUserId())
             );
             return "Post Notification success!";
         }

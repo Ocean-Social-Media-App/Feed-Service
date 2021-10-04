@@ -184,7 +184,7 @@ public class PostController {
         }
         Response response;
         List<Post> post = this.postService.getPostByUserId(userId,pageNumber);
-        if (post.size() <= 0) {
+        if (post == null || post.size() <= 0) {
             response = new Response(false, "Post was not found",null);
         } else {
             response = new Response(true, "Here is the post", post);
