@@ -93,6 +93,7 @@ public class PostController {
          * Sends a message to User-Service to get the list of userIds' for "Favorite" list so we can return the posts for those users.
          * */
         List<Integer> fave = rabbitService.requestListOfFollowers(decoded.getClaims().get("userId").asInt());
+        fave.add(decoded.getClaims().get("userId").asInt());
         List<Post> favePost = this.postService.selectPostForFav(pageNumber, fave);
 
         if(favePost != null){

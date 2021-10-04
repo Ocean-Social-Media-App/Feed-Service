@@ -153,14 +153,15 @@ public class PostService {
      * @return      returns the post object that was deleted or null if there was an error deleting it..
      */
     public Post deletePost(Integer postId) {
+        //checks to make sure post is in database
         Post checkDelete = this.postDao.findById(postId).orElse(null);
-        if(checkDelete != null){
+        //makes sure its not null
+        if (checkDelete != null) {
             this.postDao.deleteByParentId(postId);
             this.postDao.deleteById(postId);
             return checkDelete;
         }
         return null;
     }
-
 
 }
