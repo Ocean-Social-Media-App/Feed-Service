@@ -177,7 +177,7 @@ class PostControllerTest {
         assertEquals(expectedResult, actualResult);
     }
 
-/*    @Test
+    @Test
     void lookForPostByUserSuccessful() {
         //successfully get posts given a user ID
 
@@ -194,22 +194,24 @@ class PostControllerTest {
         posts.add(post1);
         posts.add(post2);
 
+        Integer pageNumber = 1;
+
         Response expectedResult = new Response(true, "Here is the post", posts);
 
         Map<String, String> headers = new HashMap<>();
         headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
 
         Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
-        Mockito.when(postService.getPostByUserId(1)).thenReturn(posts);
+        Mockito.when(postService.getPostByUserId(1, pageNumber)).thenReturn(posts);
 
         //ACT
-        Response actualResult = this.postController.lookForPostByUser(1, headers);
+        Response actualResult = this.postController.lookForPostByUser(1, pageNumber, headers);
 
         //ASSERT
         assertEquals(expectedResult, actualResult);
-    }*/
+    }
 
-/*    @Test
+    @Test
     void lookForPostByUserUnsuccessful() {
         //unsuccessfully get posts given a user ID
 
@@ -226,20 +228,22 @@ class PostControllerTest {
         posts.add(post1);
         posts.add(post2);
 
+        Integer pageNumber = 1;
+
         Response expectedResult = new Response(false, "Post was not found",null);
 
         Map<String, String> headers = new HashMap<>();
         headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
 
         Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
-        Mockito.when(postService.getPostByUserId(2)).thenReturn(new ArrayList<>());
+        Mockito.when(postService.getPostByUserId(2, pageNumber)).thenReturn(new ArrayList<>());
 
         //ACT
-        Response actualResult = this.postController.lookForPostByUser(2, headers);
+        Response actualResult = this.postController.lookForPostByUser(2, pageNumber, headers);
 
         //ASSERT
         assertEquals(expectedResult, actualResult);
-    }*/
+    }
 
     @Test
     void updatePostSuccessfully() {
@@ -344,7 +348,7 @@ class PostControllerTest {
         //ASSERT
         assertEquals(expectedResult, actualResult);
     }
-    @Ignore
+
     @Test
     void getPostFromFaveSuccessfully() {
         //successfully get favorite posts given a "page number"
@@ -379,8 +383,10 @@ class PostControllerTest {
         Response expectedResult = new Response(true,"Favorite list", favePost);
 
         Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
-        Mockito.when(decodedJWT.getClaims().get("userId").asInt()).thenReturn(2);
-        Mockito.when(rabbitService.requestListOfFollowers(2)).thenReturn(fave);
+        //Mockito.when(decodedJWT.getClaims().get("userId").asInt()).thenReturn(2);
+        //Mockito.when(rabbitService.requestListOfFollowers(2)).thenReturn(fave);
+        Mockito.when(rabbitService.requestListOfFollowers(
+                decodedJWT.getClaims().get("userId").asInt())).thenReturn(fave);
         Mockito.when(postService.selectPostForFav(1, fave)).thenReturn(favePost);
 
         //ACT
@@ -389,7 +395,7 @@ class PostControllerTest {
         //ASSERT
         assertEquals(expectedResult, actualResult);
     }
-    @Ignore
+
     @Test
     void getPostFromFaveUnsuccessfully() {
         //unsuccessfully get favorite posts given a "page number"
@@ -400,30 +406,13 @@ class PostControllerTest {
         fave.add(2);
         fave.add(3);
 
-        /*Post post1 = new Post();
-        post1.setPostId(1);
-        post1.setPostText("This is a post!");
-        post1.setUserId(1);
-        Post post2 = new Post();
-        post2.setPostId(2);
-        post2.setPostText("This is a post!");
-        post2.setUserId(1);
-        Post post3 = new Post();
-        post3.setPostId(3);
-        post3.setPostText("This is a post!");
-        post3.setUserId(1);
-        List<Post> favePost = new ArrayList<>();
-        favePost.add(post1);
-        favePost.add(post2);
-        favePost.add(post3);*/
-
         Map<String, String> headers = new HashMap<>();
         headers.put("authorization", "token string goes here"); //jwt is being mocked so the value can really be anything
 
         Response expectedResult = new Response(false,"You have reached the end", null);
 
         Mockito.when(jwtUtility.verify(headers.get("authorization"))).thenReturn(decodedJWT);
-        //Mockito.when(decodedJWT.getClaims().get("userId").asInt()).thenReturn(2);
+        Mockito.when(decodedJWT.getClaims().get("userId").asInt()).thenReturn(2);
         Mockito.when(rabbitService.requestListOfFollowers(2)).thenReturn(fave);
         Mockito.when(postService.selectPostForFav(2, fave)).thenReturn(null);
 

@@ -57,7 +57,7 @@ public class LikeController {
         Response response;
         Like tempLike = this.likeService.createLike(like);
         if(tempLike != null){
-            System.out.println(tempLike);
+            //System.out.println(tempLike);
             response = new Response(true, "Like has been added to post", tempLike);
 
             /**
